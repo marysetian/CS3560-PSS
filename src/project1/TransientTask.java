@@ -1,7 +1,7 @@
 package project1;
 
 public class TransientTask extends Task {
-    // todo : double check if these can be inherited from Task
+    // TODO : double check if these can be inherited from Task
     // private String name;
     // private String type;
     // private float startTime;
@@ -18,15 +18,22 @@ public class TransientTask extends Task {
      * @param duration   duration of task
      * @param date    used with startTime to cancel a Recurring task
      * */
-    public TransientTask(String name, String type, float startTime, float duration, int date){
-        // todo : implement constructor
+    public TransientTask(String name, String type, float startTime, float duration,
+    		int date) {
+    
+    	this.name = name;
+        this.startTime = startTime; 
+        this.duration = duration;
+        this.date = date;
     };
 
     /**
      * print all attributes of TransientTask
      * */
-    public void view(){}
-
+    public void view(){
+    
+    	System.out.println(name + " " + type + " " + startTime + " " + duration + " " + date);
+    }
     /**
      * delete anti-task iff there is no transient task overlapping the recurring task corresponding to this antitask
      * */
@@ -37,5 +44,5 @@ public class TransientTask extends Task {
      * */
     public void edit(){}
 
-    // todo : create getters and setters
+    // TODO : create getters and setters
 }
