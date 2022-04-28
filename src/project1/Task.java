@@ -2,10 +2,10 @@ package project1;
 
 public class Task {
 
-    private String name;
-    private String type;
-    private float startTime;
-    private float duration;
+    protected String name;
+    protected String type;
+    protected float startTime;
+    protected float duration;
 
 
 //    // TODO: does Task need a constructor ?
@@ -16,7 +16,9 @@ public class Task {
 //        this.duration = duration;
 //    }
 
-
+    public boolean checkDuplicate(String name, float startTime, float duration) {
+    	return true;
+    }
 
 
 
