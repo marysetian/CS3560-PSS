@@ -11,7 +11,7 @@ public class RecurringTask extends Task {
     private int endDate;    //YYYYMMDD
     private int frequency;  // 1 - daily , 7 weekly
     private boolean available;  // true = anti-task exists for this task
-    private String[] type = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal"};
+    private String[] validTypes = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal"};
 
 
     /**
