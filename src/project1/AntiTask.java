@@ -22,6 +22,8 @@ public class AntiTask extends Task{
      * */
     public AntiTask(String name, String type, float startTime, float duration, int date){
         // todo : implement constructor
+        super(name,type,startTime,duration);
+        this.date = date;
     };
 
 

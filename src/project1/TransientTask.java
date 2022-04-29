@@ -20,6 +20,8 @@ public class TransientTask extends Task {
      * */
     public TransientTask(String name, String type, float startTime, float duration, int date){
         // todo : implement constructor
+        super(name,type,startTime,duration);
+        this.date = date;
     };
 
     /**
