@@ -160,3 +160,43 @@ public class Main {
 		}
 		return 0;
 	}
+	public static float verifyDuration(float hour, float minute) {
+		if (hour >= 0 && minute >= 0) {
+			if (minute < 60) {
+				minute = Math.round(minute/15);
+				minute = (float) ((minute * 0.25));
+			} else {
+				hour = (float) (hour + Math.floor(minute / 60));
+				minute = (minute % 60);
+				minute = Math.round(minute / 15);
+				minute = (float) ((minute * 0.25));
+			}
+			return hour + minute;
+
+		} else {
+			return 0;
+		}
+	}
+	public static boolean verifyCategory ( int taskSelectionNum, String userInput){
+		String[] categories = {"Visit", "Shopping", "Appointment", "Class", "Study", "Sleep", "Exercise", "Work", "Meal"};
+		switch (taskSelectionNum) {
+			case 1:
+				return userInput.equals("Cancellation");
+			case 2:
+				for (int i = 0; i < 3; i++) {
+					if (categories[i].equals(userInput)) {
+						return true;
+					}
+				}
+				return false;
+			case 3:
+				for (int i = 3; i < categories.length; i++) {
+					if (categories[i].equals(userInput)) {
+						return true;
+					}
+				}
+			return false;
+			default:
+				return false;
+		}
+	}
