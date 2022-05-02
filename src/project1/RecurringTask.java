@@ -118,7 +118,7 @@ public class RecurringTask extends Task {
     public void view() {
     	System.out.println("Name: " + getName() +"\nType: " + getType() + "\nStart time: " + getStartTime()
     						+ "\nDuration: " + getDuration() + "\n Start date: " + getStartDate()
-    						+ "\nEnd date" + endDate + "\nfrequency: " + getFrequency());
+    						+ "\nEnd date: " + endDate + "\nfrequency: " + getFrequency());
     }
 
     /**
