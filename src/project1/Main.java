@@ -21,38 +21,37 @@ public class Main {
     }
     
 	private static void chooseUse() {
-    	System.out.println("Please choose from the following:\n"
-    			+ "1. view schedule\n"
-    			+ "2. create task\n"
-    			+ "3. delete task\n"
-    			+ "4. edit task\n"
-    			+ "5. read schedule from file\n"
-    			+ "6. exit program\n");
-    	try (Scanner keyboard = new Scanner(System.in)) {
+		do {
+			Scanner keyboard = new Scanner(System.in);
+	    	System.out.println("Please choose from the following:\n"
+	    			+ "1. view schedule\n"
+	    			+ "2. create task\n"
+	    			+ "3. delete task\n"
+	    			+ "4. edit task\n"
+	    			+ "5. read schedule from file\n"
+	    			+ "6. exit program\n");
 			int choice = keyboard.nextInt();
 			switch (choice) {
 			case 1:
 			case 2:	createTask();
-					chooseUse();
-					break;
+					keyboard.close();
+					continue;
 			case 3:
 			case 4:
 			case 5:
 			case 6:
 			default: System.out.println("Invalid input, please try again\n");
-					chooseUse();
+					 keyboard.close();
 			}
-		}
+		} while (true);
     }
 
 	private static void createTask() {
-		//test example
-		String name = "test";
-		String type = "Transient";
-		float startTime = 100;
-		float duration = 100;
-		int date = 100;
-		TransientTask exampleTask = new TransientTask(name, type, startTime, duration, date);
-		exampleTask.view();
+		RecurringTask newTask = new RecurringTask();
+		newTask.create();
+		Schedule.hm.put(newTask.getName(), newTask);
+		System.out.println("Success");
+		RecurringTask testTask =(RecurringTask)Schedule.hm.get("test");
+		testTask.view();
 	}
 }
