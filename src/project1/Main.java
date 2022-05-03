@@ -1,17 +1,14 @@
 package project1;
-
 import java.util.GregorianCalendar;
 import java.util.Scanner;
-import java.lang.Math; //Needed to use Math.round()
+import java.lang.Math; // Needed to use Math.round()
 import java.util.Calendar;
 
 public class Main {
 
 	public static void main(String[] args) {
-		//welcomeMessage();
-		//chooseUse();
-
-		verifyDate(12);
+		welcomeMessage();
+		chooseUse();
 	}
 
 	private static void welcomeMessage() {
@@ -19,7 +16,6 @@ public class Main {
 	}
 
 	private static void chooseUse() {
-
 		System.out.println("Please choose from the following:\n"
 				+ "1. view schedule\n"
 				+ "2. create task\n"
@@ -27,14 +23,16 @@ public class Main {
 				+ "4. edit task\n"
 				+ "5. read schedule from file\n"
 				+ "6. exit program\n");
-
 		try (Scanner keyboard = new Scanner(System.in)) {
 			int choice = keyboard.nextInt();
 			switch (choice) {
 				case 1:
 					// view schedule
+					//
+					//
 					break;
 				case 2:
+					createTask();
 					// call menu for user to specify the type of task they want to create
 					// call create method for the certain task type
 					break;
@@ -74,6 +72,8 @@ public class Main {
 					break;
 
 				case 2:
+					RecurringTask test1 = new RecurringTask();
+					test1.create();
 					// Recurring Task
 					// ask user to name the task
 					// verify name is not a duplicate
@@ -96,20 +96,25 @@ public class Main {
 
 	}
 
-
 	/**
 	 * verifies the date of task is valid
 	 *
-	 * @param date integer in form YYYYMMDD given by user
+	 * @param year integer in form YYYYMMDD given by user
+	 * @param month integer in form YYYYMMDD given by user
+	 * @param day integer in form YYYYMMDD given by user
 	 * @return boolean    true if date >= current date
 	 */
-	public static boolean verifyDate(int date) {
+	public static boolean verifyDate(int year, int month, int day) {
 		Calendar today = new GregorianCalendar();
 		int currentYear = today.get(Calendar.YEAR);
 		int currentMonth = today.get(Calendar.MONTH) + 1;
+		;
 		int currentDay = today.get(Calendar.DAY_OF_MONTH);
 		System.out.println("Year: " + currentYear
 				+ " Month: " + currentMonth + " Day: " + currentDay);
+
+		if( year >= currentYear && month >= currentMonth && day >= currentDay)
+			return true;
 
 		return false;
 	}
@@ -214,3 +219,4 @@ public class Main {
 		}
 	}
 }
+

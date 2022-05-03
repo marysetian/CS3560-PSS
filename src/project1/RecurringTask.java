@@ -8,6 +8,8 @@ public class RecurringTask extends Task {
 //    private String type;
 //    private float startTime;
 //    private float duration;
+    //
+    //
 
     private int startDate;  //YYYYMMDD
     private int endDate;    //YYYYMMDD
@@ -20,7 +22,7 @@ public class RecurringTask extends Task {
     * constructor for a Recurring Task
     * @param name   name of Recurring task - must be unique
     * @param type   must be a value from type array
-    * @param startTime  time task begins
+    * @param StartTime  time task begins
     * @param duration   duration of task
     * @param startDate  Date task begins
     * @param endDate    Date task ends
@@ -91,25 +93,44 @@ public class RecurringTask extends Task {
             	System.out.println("\nInvalid type, please enter again.");
             }
         }
-        System.out.println("Enter Start Time: ");
-        float iStart = (keyboard.nextFloat());
-        setStartTime(iStart);
+        System.out.println("Enter start hour: ");
+        float startHour = (keyboard.nextFloat());
+
+        System.out.println("Enter start minute: ");
+        float startMinute = (keyboard.nextFloat());
+
+        System.out.println("Enter start am or pm: ");
+        String dayTime = (keyboard.next());
+        Main.verifyStartTime(startHour, startMinute, dayTime);
         
-        System.out.println("Enter Duration: ");
-        float iDuration = (keyboard.nextFloat());
-        setDuration(iDuration);
-        
+        System.out.println("Enter Duration hour: ");
+        float durHour = (keyboard.nextFloat());
+
+        System.out.println("Enter Duration minute: ");
+        float durMinute = (keyboard.nextFloat());
+        Main.verifyDuration(durHour, durMinute);
+
+
         System.out.println("Enter frequency: ");
         int iFrequency = (keyboard.nextInt());
-        setFrequency(iFrequency);
+        Main.verifyFrequency(iFrequency);
 	    
-        System.out.println("Enter start date: ");
-        int iStartDate = (keyboard.nextInt());
-        setStartDate(iStartDate);
+        System.out.println("Enter start year in format YYYY: ");
+        int startYear = (keyboard.nextInt());
+
+        System.out.println("Enter start month in format MM: ");
+        int startMonth = (keyboard.nextInt());
+
+        System.out.println("Enter start day in format DD: ");
+        int startDay = (keyboard.nextInt());
+
+        Main.verifyDate(startYear, startMonth, startDay);
+
+        int iStartDate = startYear + startMonth + startDay;
         
         System.out.println("Enter end date: ");
         int iEndDate = (keyboard.nextInt());
-        setEndDate(iEndDate);
+        Main.verifyEndDate(iStartDate,iEndDate);
         keyboard.close();
     }
     /**
@@ -172,7 +193,7 @@ public class RecurringTask extends Task {
     private void setStartTime(float startTime) {
     	this.startTime = startTime;
     }
-    
+
     private void setDuration(float duration) {
     	this.duration = duration;
     }
@@ -224,3 +245,4 @@ public class RecurringTask extends Task {
 		return validTypes;
 	}
 }
+
