@@ -98,18 +98,21 @@ public class Main {
 
 	/**
 	 * verifies the date of task is valid
-	 *
-	 * @param year integer in form YYYYMMDD given by user
-	 * @param month integer in form YYYYMMDD given by user
-	 * @param day integer in form YYYYMMDD given by user
+	 * @param date		date in form YYYYMMDD given by user
 	 * @return boolean    true if date >= current date
 	 */
-	public static boolean verifyDate(int year, int month, int day) {
+	public static boolean verifyDate(int date) {
 		Calendar today = new GregorianCalendar();
 		int currentYear = today.get(Calendar.YEAR);
 		int currentMonth = today.get(Calendar.MONTH) + 1;
-		;
 		int currentDay = today.get(Calendar.DAY_OF_MONTH);
+
+		// parse date into year, month, day
+		String tempDate = String.valueOf(date);
+		int year = Integer.valueOf(tempDate.substring(0,3));
+		int month = Integer.valueOf(tempDate.substring(4,5));;
+		int day = Integer.valueOf(tempDate.substring(6,7));;
+
 		System.out.println("Year: " + currentYear
 				+ " Month: " + currentMonth + " Day: " + currentDay);
 
@@ -155,29 +158,24 @@ public class Main {
 		if ((0 < hour && hour <= 24) && (0 < minute && minute <= 59)) {
 			switch (dayTime) {
 				case "am":
-					if (hour < 12) {
-						minute = minute / 15;
-						minute = Math.round(minute);
-						minute = (float) (minute * .25);
-						return hour + minute;
-					}
-					return 0;
+					minute = minute / 15;
+					minute = Math.round(minute);
+					minute = (float) (minute * .25);
+					return hour + minute;
 
 				case "pm":
-					if (hour >= 12) {
-						hour += 12;
-						minute = minute / 15;
-						minute = Math.round(minute);
-						minute = (float) (minute * .25);
-						return hour + minute;
-					}
-					return 0;
+					hour += 12;
+					minute = minute / 15;
+					minute = Math.round(minute);
+					minute = (float) (minute * .25);
+					return hour + minute;
 			}
 		}
 		return 0;
 	}
 
 	public static float verifyDuration(float hour, float minute) {
+		// are both hour and minute positive integers
 		if (hour >= 0 && minute >= 0) {
 			if (minute < 60) {
 				minute = Math.round(minute / 15);

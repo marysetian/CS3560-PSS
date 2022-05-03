@@ -1,11 +1,10 @@
 package project1;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class Schedule {
 
-    private static Map<String, Task>hm = new HashMap<>();
+    public static Map<String, Task>hm = new HashMap<>();
 
 
     /**
