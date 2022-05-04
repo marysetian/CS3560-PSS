@@ -7,8 +7,9 @@ public class testingTasks {
     public static void main(String[] args) {
 
         //createTransientTask();
-
-        createAntiTask();
+        int date = 20220510;
+        System.out.println(Main.verifyDate(date));
+        //createAntiTask();
     }
 
     private static void createAntiTask()

@@ -107,27 +107,11 @@ public class AntiTask extends Task{
         //date input and verification  yyyy mm dd
         boolean validDate = false;
         while(!validDate) {
-            System.out.println("Enter Year (YYYY): ");
-            int iYear = keyboard.nextInt();
+            System.out.println("Enter Date (YYYYMMDD): ");
+            int iDate = keyboard.nextInt();
 
-            System.out.println("Enter Month (MM): ");
-            int iMonth = keyboard.nextInt();
-
-            System.out.println("Enter Day (DD)");
-            int iDay = keyboard.nextInt();
-
-            if(Main.verifyDate(iYear, iMonth, iDay))
+            if(Main.verifyDate(iDate))
             {
-                StringBuilder sb = new StringBuilder();
-                sb.append(iYear);
-                if(iMonth < 10)
-                    sb.append(0);
-                sb.append(iMonth);
-                if(iDay < 10)
-                    sb.append(0);
-                sb.append(iDay);
-                String sDate = sb.toString();
-                int iDate = Integer.valueOf(sDate);
                 setDate(iDate);
                 validDate = true;
             }
@@ -234,27 +218,11 @@ public class AntiTask extends Task{
                 case 4:
                     boolean validDate = false;
                     while(!validDate) {
-                        System.out.println("Enter New Year (YYYY): ");
-                        int iYear = keyboard.nextInt();
+                        System.out.println("Enter New Date (YYYYMMDD): ");
+                        int iDate = keyboard.nextInt();
 
-                        System.out.println("Enter New Month (MM): ");
-                        int iMonth = keyboard.nextInt();
-
-                        System.out.println("Enter New Day (DD)");
-                        int iDay = keyboard.nextInt();
-
-                        if(Main.verifyDate(iYear, iMonth, iDay))
+                        if(Main.verifyDate(iDate))
                         {
-                            StringBuilder sb = new StringBuilder();
-                            sb.append(iYear);
-                            if(iMonth < 10)
-                                sb.append(0);
-                            sb.append(iMonth);
-                            if(iDay < 10)
-                                sb.append(0);
-                            sb.append(iDay);
-                            String sDate = sb.toString();
-                            int iDate = Integer.valueOf(sDate);
                             setDate(iDate);
                             validDate = true;
                         }
