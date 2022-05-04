@@ -95,42 +95,30 @@ public class RecurringTask extends Task {
         }
         System.out.println("Enter start hour: ");
         float startHour = (keyboard.nextFloat());
-
         System.out.println("Enter start minute: ");
         float startMinute = (keyboard.nextFloat());
-
         System.out.println("Enter start am or pm: ");
         String dayTime = (keyboard.next());
-        Main.verifyStartTime(startHour, startMinute, dayTime);
+        System.out.println(Main.verifyStartTime(startHour, startMinute, dayTime));
         
         System.out.println("Enter Duration hour: ");
         float durHour = (keyboard.nextFloat());
-
         System.out.println("Enter Duration minute: ");
         float durMinute = (keyboard.nextFloat());
-        Main.verifyDuration(durHour, durMinute);
+        System.out.println(Main.verifyDuration(durHour, durMinute));
 
 
         System.out.println("Enter frequency: ");
         int iFrequency = (keyboard.nextInt());
-        Main.verifyFrequency(iFrequency);
+        System.out.println( Main.verifyFrequency(iFrequency));
 	    
-        System.out.println("Enter start year in format YYYY: ");
-        int startYear = (keyboard.nextInt());
-
-        System.out.println("Enter start month in format MM: ");
-        int startMonth = (keyboard.nextInt());
-
-        System.out.println("Enter start day in format DD: ");
-        int startDay = (keyboard.nextInt());
-
-        Main.verifyDate(startYear, startMonth, startDay);
-
-        int iStartDate = startYear + startMonth + startDay;
+        System.out.println("Enter start date in format YYYYMMDD: ");
+        int iStartDate = (keyboard.nextInt());
+        System.out.println(Main.verifyDate(iStartDate));
         
         System.out.println("Enter end date: ");
         int iEndDate = (keyboard.nextInt());
-        Main.verifyEndDate(iStartDate,iEndDate);
+        System.out.println(Main.verifyEndDate(iStartDate,iEndDate));
         keyboard.close();
     }
     /**
@@ -182,34 +170,31 @@ public class RecurringTask extends Task {
         	}
     	}
     }
-    /*
-    private void setName(String name) {
+    public void setName(String name) {
     	this.name = name;
     }
     
-    private void setType(String type) {
+    public void setType(String type) {
     	this.type = type;
     }
     
-    private void setStartTime(float startTime) {
+    public void setStartTime(float startTime) {
     	this.startTime = startTime;
     }
 
-    private void setDuration(float duration) {
+    public void setDuration(float duration) {
     	this.duration = duration;
     }
-
-
-     */
-    private void setStartDate(int startDate) {
+    
+    public void setStartDate(int startDate) {
     	this.startDate = startDate;
     }
     
-    private void setEndDate(int endDate) {
+    public void setEndDate(int endDate) {
     	this.endDate = endDate;
     }
     
-    private void setFrequency(int frequency) {
+    public void setFrequency(int frequency) {
     	this.frequency = frequency;
     }
 
