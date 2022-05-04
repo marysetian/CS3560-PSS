@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Schedule {
 
-    private Map<String, Task>hm = new HashMap<>();
+    static Map<String, Task>hm = new HashMap<>();
 
 
     /**
