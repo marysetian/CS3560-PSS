@@ -67,7 +67,7 @@ public class AntiTask extends Task{
         //start time input and verification
         boolean validStartTime = false;
         while(!validStartTime) {
-            System.out.println("Enter start hour (1-24): ");
+            System.out.println("Enter start hour (1-12): ");
             float startHour = (keyboard.nextFloat());
 
             System.out.println("Enter start minute: ");
@@ -82,7 +82,7 @@ public class AntiTask extends Task{
                 validStartTime = true;
             }
             else
-                System.out.println("INVALID Start Time, Enter a Start Hour between 1 - 24 and Start Minute between 0 - 59");
+                System.out.println("INVALID Start Time, Enter a Start Hour between 1 - 12 and Start Minute between 0 - 59");
         }
 
         //duration time input and verification
@@ -178,7 +178,7 @@ public class AntiTask extends Task{
                 case 2:
                     boolean validStartTime = false;
                     while(!validStartTime) {
-                        System.out.println("Enter New start hour (1-24): ");
+                        System.out.println("Enter New start hour (1-12): ");
                         float startHour = (keyboard.nextFloat());
 
                         System.out.println("Enter New start minute (0-59): ");
@@ -193,7 +193,7 @@ public class AntiTask extends Task{
                             validStartTime = true;
                         }
                         else
-                            System.out.println("INVALID Start Time, Enter a Start Hour between 1 - 24 and Start Minute between 0 - 59");
+                            System.out.println("INVALID Start Time, Enter a Start Hour between 1 - 12 and Start Minute between 0 - 59");
                     }
                     break;
                 case 3:
@@ -247,55 +247,3 @@ public class AntiTask extends Task{
 
     // todo : do we want to asd cancelRecurring??
 }
-
-
-
-
-
-
-
-
-// public class AntiTask extends Task{
-
-//     // todo : double check if these can be inherited from Task
-// //    private String name;
-// //    private String type;
-// //    private float startTime;
-// //    private float duration;
-
-//     private int date;    // YYYYMMDD
-//     private final String type = "Cancellation";
-
-
-//     /**
-//      * constructor for a AntiTask
-//      * @param name   name of Recurring task - must be unique
-//      * @param type   must be a value from type array
-//      * @param startTime  time task begins
-//      * @param duration   duration of task
-//      * @param date    used with startTime to cancel a Recurring task
-//      * */
-//     public AntiTask(String name, String type, float startTime, float duration, int date){
-//         // todo : implement constructor
-//     };
-
-
-
-//     /**
-//      * print all attributes of AntiTask
-//      * */
-//     public void view(){}
-
-//     /**
-//      * delete anti-task iff there is no transient task overlapping the recurring task corresponding to this antitask
-//      * */
-//     public void delete(){}
-
-//     /**
-//      * displays a menu for a user to edit any task attribute
-//      * */
-//     public void edit(){}
-
-//     // todo : create getters and setters
-//     // todo : do we want to asd cancelRecurring??
-// }

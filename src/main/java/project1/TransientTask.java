@@ -84,7 +84,7 @@ public class TransientTask extends Task {
         //start time input and verification
         boolean validStartTime = false;
         while(!validStartTime) {
-            System.out.println("Enter start hour (1-24): ");
+            System.out.println("Enter start hour (1-12): ");
             float startHour = (keyboard.nextFloat());
 
             System.out.println("Enter start minute: ");
@@ -99,7 +99,7 @@ public class TransientTask extends Task {
                 validStartTime = true;
             }
             else
-                System.out.println("INVALID Start Time, Enter a Start Hour between 1 - 24 and Start Minute between 0 - 59");
+                System.out.println("INVALID Start Time, Enter a Start Hour between 1 - 12 and Start Minute between 0 - 59");
         }
 
         //duration time input and verification
@@ -216,7 +216,7 @@ public class TransientTask extends Task {
                 case 3:
                     boolean validStartTime = false;
                     while(!validStartTime) {
-                        System.out.println("Enter New start hour (1-24): ");
+                        System.out.println("Enter New start hour (1-12): ");
                         float startHour = (keyboard.nextFloat());
 
                         System.out.println("Enter New start minute (0-59): ");
@@ -231,7 +231,7 @@ public class TransientTask extends Task {
                             validStartTime = true;
                         }
                         else
-                            System.out.println("INVALID Start Time, Enter a Start Hour between 1 - 24 and Start Minute between 0 - 59");
+                            System.out.println("INVALID Start Time, Enter a Start Hour between 1 - 12 and Start Minute between 0 - 59");
                     }
                     break;
                 case 4:

@@ -8,7 +8,7 @@ public class Task {
     protected float duration;
 
 
-//    // TODO: does Task need a constructor ?
+    //    // TODO: does Task need a constructor ?
     public Task(String name, String type, float startTime, float duration){
         this.name = name;
         this.type = type;
@@ -19,7 +19,7 @@ public class Task {
     public Task() {}
 
     public boolean checkDuplicate(String name, float startTime, float duration) {
-    	return true;
+        return true;
     }
 
 
