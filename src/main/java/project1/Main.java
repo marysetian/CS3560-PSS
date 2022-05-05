@@ -70,11 +70,24 @@ public class Main {
 					// verify name is not a duplicate
 					// create task with an empty constructor
 					// call create method for corresponding task
+
+					TransientTask Test1 = new TransientTask();
+					Test1.create();
+					Test1.view();
+
+					Test1.edit();
+					Test1.view();
+
+
 					break;
 
 				case 2:
 					RecurringTask test1 = new RecurringTask();
 					test1.create();
+					test1.view();
+
+					//test1.edit();
+					//test1.view();
 					// Recurring Task
 					// ask user to name the task
 					// verify name is not a duplicate
@@ -88,6 +101,14 @@ public class Main {
 					// verify name is not a duplicate
 					// create task with an empty constructor
 					// call create method for corresponding task
+
+					AntiTask antiTest = new AntiTask();
+					antiTest.create();
+					antiTest.view();
+
+					antiTest.edit();
+					antiTest.view();
+
 					break;
 				default:
 					System.out.println("Invalid input, please try again\n");
@@ -99,20 +120,20 @@ public class Main {
 
 	/**
 	 * verifies the date of task is valid
-	 *
-	 * @param year integer in form YYYYMMDD given by user
-	 * @param month integer in form YYYYMMDD given by user
-	 * @param day integer in form YYYYMMDD given by user
+	 * @param date		date in form YYYYMMDD given by user
 	 * @return boolean    true if date >= current date
 	 */
-	public static boolean verifyDate(int year, int month, int day) {
+	public static boolean verifyDate(int date) {
 		Calendar today = new GregorianCalendar();
 		int currentYear = today.get(Calendar.YEAR);
 		int currentMonth = today.get(Calendar.MONTH) + 1;
-		;
 		int currentDay = today.get(Calendar.DAY_OF_MONTH);
-		System.out.println("Year: " + currentYear
-				+ " Month: " + currentMonth + " Day: " + currentDay);
+
+		// parse date into year, month, day
+		String tempDate = String.valueOf(date);
+		int year = Integer.valueOf(tempDate.substring(0,4));
+		int month = Integer.valueOf(tempDate.substring(4,6));;
+		int day = Integer.valueOf(tempDate.substring(6,8));;
 
 		if( year >= currentYear && month >= currentMonth && day >= currentDay)
 			return true;
@@ -129,7 +150,7 @@ public class Main {
 	 * @return true if endDate is greater than or equal to startDate
 	 */
 	public static boolean verifyEndDate(int startDate, int endDate) {
-		return endDate >= startDate;
+		return endDate > startDate;
 	}
 
 	/**
@@ -153,32 +174,29 @@ public class Main {
 	public static float verifyStartTime(float hour, float minute, String dayTime) {
 
 		// is hour between 0 and 24 inclusive, is minute between 0 and 59 inclusive
-		if ((0 < hour && hour <= 24) && (0 < minute && minute <= 59)) {
+		if ((0 <= hour && hour <= 12) && (0 <= minute && minute <= 59)) {
 			switch (dayTime) {
 				case "am":
-					if (hour < 12) {
-						minute = minute / 15;
-						minute = Math.round(minute);
-						minute = (float) (minute * .25);
-						return hour + minute;
-					}
-					return 0;
+					minute = minute / 15;
+					minute = Math.round(minute);
+					minute = (float) (minute * .25);
+					return hour + minute;
 
 				case "pm":
-					if (hour >= 12) {
-						hour += 12;
-						minute = minute / 15;
-						minute = Math.round(minute);
-						minute = (float) (minute * .25);
-						return hour + minute;
-					}
-					return 0;
+					hour += 12;
+					minute = minute / 15;
+					minute = Math.round(minute);
+					minute = (float) (minute * .25);
+					if(hour == 24)
+						return minute;
+					return hour + minute;
 			}
 		}
 		return 0;
 	}
 
 	public static float verifyDuration(float hour, float minute) {
+		// are both hour and minute positive integers
 		if (hour >= 0 && minute >= 0) {
 			if (minute < 60) {
 				minute = Math.round(minute / 15);

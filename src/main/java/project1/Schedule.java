@@ -1,5 +1,4 @@
 package project1;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +18,9 @@ public class Schedule {
     * @param filename  name of file to be reae*/
     public void readFromFile(String filename){};
 
-
+    /**
+     * verify file category is valid when reading from a file
+     * */
 
 
 }
