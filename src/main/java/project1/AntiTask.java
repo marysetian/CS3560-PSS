@@ -42,29 +42,35 @@ public class AntiTask extends Task{
         System.out.println("\t\t\t\t\t\tCREATE ANTI TASK");
         System.out.println("--------------------------------------------------------------------------------");
 
-        boolean validName = false;
-        while(!validName) {
-            System.out.println("Enter Anti-Task Name: ");
-            String inputName = keyboard.nextLine().trim();
-            if (Schedule.hm.containsKey(inputName)) {
-                System.out.println("Invalid name: schedule contains duplicate.\n"
-                        + "Retry name entry? 1. Yes 2. No\n");
-                int choice = keyboard.nextInt();
-                if (choice == 1) {
-                    continue;
+
+        String inputName = new String();
+
+         boolean validName = false;
+         while(!validName) {
+            System.out.println("Enter Recurring-Task Name to override: ");
+            inputName = keyboard.nextLine().trim();
+            if (Schedule.recurringTaskMap.containsKey(inputName)) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("Anti-");
+                sb.append(inputName);
+                setName(sb.toString());
+                validName = true;
                 }
-                else {
-                    keyboard.close();
-                    return;
-                }
+            else
+            {
+             System.out.println("Recurring Task Name does not exist, enter valid name");
             }
-            validName = true;
-            setName(inputName);
-        }
+
+            }
+
+
+
+
         //anti task is always Cancellation
         setType(validType);
 
         //start time input and verification
+        /*
         boolean validStartTime = false;
         while(!validStartTime) {
             System.out.println("Enter start hour (1-12): ");
@@ -85,6 +91,17 @@ public class AntiTask extends Task{
                 System.out.println("INVALID Start Time, Enter a Start Hour between 1 - 12 and Start Minute between 0 - 59");
         }
 
+
+         */
+
+
+        RecurringTask getInfo = Schedule.recurringTaskMap.get(inputName);
+        float aStart = getInfo.getStartTime();
+        float aDuratiom = getInfo.getDuration();
+        setStartTime(aStart);
+        setDuration(aDuratiom);
+
+        /*
         //duration time input and verification
         boolean validDuration = false;
         while(!validDuration) {
@@ -104,20 +121,27 @@ public class AntiTask extends Task{
                 System.out.println("INVALID Duration, Enter numbers greater than 0 for Duration Hour and Minute");
         }
 
+
+         */
+
+        int recurStart = getInfo.getStartDate();
+        int recurEnd = getInfo.getEndDate();
         //date input and verification  yyyy mm dd
         boolean validDate = false;
         while(!validDate) {
             System.out.println("Enter Date (YYYYMMDD): ");
             int iDate = keyboard.nextInt();
 
-            if(Main.verifyDate(iDate))
+            if(Main.verifyDate(iDate) && Main.verifyEndDate(recurStart, iDate) && Main.verifyEndDate(iDate, recurEnd))
             {
                 setDate(iDate);
                 validDate = true;
             }
             else
-                System.out.println("INVALID Date, Enter valid date values");
+                System.out.println("INVALID Date, Enter valid date values between Recurring Start and End Date");
         }
+
+
     }
 
 
@@ -132,7 +156,10 @@ public class AntiTask extends Task{
     /**
      * delete anti-task iff there is no transient task overlapping the recurring task corresponding to this antitask
      * */
-    public void delete(){}
+    public void delete()
+    {
+        Schedule.hm.remove(getName());
+    }
 
     /**
      * displays a menu for a user to edit any task attribute

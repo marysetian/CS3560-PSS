@@ -22,6 +22,7 @@ public class Task {
         return true;
     }
 
+    public void view(){}
 
     public void setName(String name)
     {

@@ -46,19 +46,13 @@ public class TransientTask extends Task {
             System.out.println("Enter Transient Task Name: ");
             String inputName = keyboard.nextLine().trim();
             if (Schedule.hm.containsKey(inputName)) {
-                System.out.println("Invalid name: schedule contains duplicate.\n"
-                        + "Retry name entry? 1. Yes 2. No\n");
-                int choice = keyboard.nextInt();
-                if (choice == 1) {
-                    continue;
-                }
-                else {
-                    keyboard.close();
-                    return;
-                }
+                System.out.println("Invalid name: schedule contains duplicate.");
+
             }
-            validName = true;
-            setName(inputName);
+            else {
+                validName = true;
+                setName(inputName);
+            }
         }
 
         boolean setValid = false;
@@ -137,6 +131,7 @@ public class TransientTask extends Task {
                 System.out.println("INVALID Date, Enter valid date values");
         }
 
+
     }
 
 
@@ -150,7 +145,10 @@ public class TransientTask extends Task {
     /**
      * delete anti-task iff there is no transient task overlapping the recurring task corresponding to this antitask
      * */
-    public void delete(){}
+    public void delete()
+    {
+        Schedule.hm.remove(getName());
+    }
 
     /**
      * displays a menu for a user to edit any task attribute

@@ -1,5 +1,6 @@
 package project1;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Scanner;
 import java.lang.Math; // Needed to use Math.round()
 import java.util.Calendar;
@@ -30,6 +31,7 @@ public class Main {
 					// view schedule
 					//
 					//
+					viewSchedule();
 					break;
 				case 2:
 					createTask();
@@ -55,6 +57,8 @@ public class Main {
 		}
 	}
 
+
+
 	private static void createTask() {
 		System.out.println("Choose from the following task types to create:\n "
 				+ "1. Transient Task"
@@ -70,12 +74,16 @@ public class Main {
 					// create task with an empty constructor
 					// call create method for corresponding task
 
+					/*
 					TransientTask Test1 = new TransientTask();
 					Test1.create();
 					Test1.view();
 
 					Test1.edit();
 					Test1.view();
+
+					 */
+					createTransientTask();
 
 
 					break;
@@ -100,13 +108,15 @@ public class Main {
 					// verify name is not a duplicate
 					// create task with an empty constructor
 					// call create method for corresponding task
+					createAntiTask();
+					/*
+					AntiTask antiTest1 = new AntiTask();
+					antiTest1.create();
+					antiTest1.view();
 
-					AntiTask antiTest = new AntiTask();
-					antiTest.create();
-					antiTest.view();
-
-					antiTest.edit();
-					antiTest.view();
+					antiTest1.edit();
+					antiTest1.view();
+					*/
 
 					break;
 				default:
@@ -133,6 +143,18 @@ public class Main {
 		int year = Integer.valueOf(tempDate.substring(0,4));
 		int month = Integer.valueOf(tempDate.substring(4,6));;
 		int day = Integer.valueOf(tempDate.substring(6,8));;
+
+		if(year >= currentYear && month >= currentMonth)
+		{
+			if(month == currentMonth)
+			{
+				if(day >= currentDay)
+					return true;
+				else
+					return false;
+			}
+			return true;
+		}
 
 		if( year >= currentYear && month >= currentMonth && day >= currentDay)
 			return true;
@@ -235,6 +257,35 @@ public class Main {
 			default:
 				return false;
 		}
+	}
+
+	public static void viewSchedule()
+	{
+		Scanner keyboard = new Scanner(System.in);
+		System.out.println("Current Tasks");
+		System.out.println(Schedule.hm.keySet());
+		System.out.println("Select a Task to View: ");
+		String view = keyboard.nextLine().trim();
+
+		Schedule.hm.get(view).view();
+	}
+
+	public static void createTransientTask()
+	{
+		TransientTask tt = new TransientTask();
+		tt.create();
+		Schedule.hm.put(tt.getName(), tt);
+		System.out.println("Transient Task " + tt.getName() + " added to Schedule");
+		tt.view();
+	}
+
+	public static void createAntiTask()
+	{
+		AntiTask at = new AntiTask();
+		at.create();
+		System.out.println("Anti Task " + at.getName() + " added to Schedule");
+		Schedule.hm.put(at.getName(), at);
+		at.view();
 	}
 }
 

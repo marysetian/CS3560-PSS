@@ -31,6 +31,7 @@ public class RecurringTask extends Task {
     public RecurringTask(String name, String type, float StartTime, float duration,
                          int startDate, int endDate, int frequency){
         this.name = name;
+        this.type = type;           //put this in constructor
         this.startTime = StartTime;
         this.duration = duration;
         this.startDate = startDate;
