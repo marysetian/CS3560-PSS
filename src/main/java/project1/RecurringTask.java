@@ -17,6 +17,9 @@ public class RecurringTask extends Task {
     private boolean available = false;  // true = anti-task exists for this task
     private String[] validTypes = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal"};
 
+    private String taskType;
+    private final String classType = "Recurring";
+
 
     /**
      * constructor for a Recurring Task
@@ -29,7 +32,7 @@ public class RecurringTask extends Task {
      * @param frequency  how often task occurs
      * */
     public RecurringTask(String name, String type, float StartTime, float duration,
-                         int startDate, int endDate, int frequency){
+                         int startDate, int endDate, int frequency, String taskType){
         this.name = name;
         this.type = type;           //put this in constructor
         this.startTime = StartTime;
@@ -37,6 +40,7 @@ public class RecurringTask extends Task {
         this.startDate = startDate;
         this.endDate = endDate;
         this.frequency = frequency;
+        this.taskType = taskType;
     }
 
     public RecurringTask() {
@@ -194,6 +198,8 @@ public class RecurringTask extends Task {
             }
         }
 
+        setTaskType(classType);
+
         return;
     }
     /**
@@ -202,7 +208,7 @@ public class RecurringTask extends Task {
     public void view() {
         System.out.println("Name: " + getName() +"\nType: " + getType() + "\nStart time: " + getStartTime()
                 + "\nDuration: " + getDuration() + "\nStart date: " + getStartDate()
-                + "\nEnd date: " + endDate + "\nfrequency: " + getFrequency());
+                + "\nEnd date: " + endDate + "\nfrequency: " + getFrequency() + "\nTask Type: " + getTaskType());
     }
 
     /**
@@ -469,4 +475,8 @@ public class RecurringTask extends Task {
     public String[] getValidTypes() {
         return validTypes;
     }
+
+
+    public void setTaskType(String taskType){this.taskType = taskType;};
+    public String getTaskType() {return taskType;};
 }

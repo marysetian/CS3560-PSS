@@ -31,7 +31,7 @@ public class Main {
 					// view schedule
 					//
 					//
-					viewSchedule();
+
 					break;
 				case 2:
 					createTask();
@@ -259,7 +259,7 @@ public class Main {
 		}
 	}
 
-	public static void viewSchedule()
+	public static void viewTask()
 	{
 		Scanner keyboard = new Scanner(System.in);
 		System.out.println("Current Tasks");

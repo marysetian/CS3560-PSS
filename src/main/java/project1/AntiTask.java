@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class AntiTask extends Task{
 
+
     // todo : double check if these can be inherited from Task
 //    private String name;
 //    private String type;
@@ -12,6 +13,8 @@ public class AntiTask extends Task{
 
     private int date;    // YYYYMMDD
     private final String validType = "Cancellation";
+    private String taskType;
+    private final String classType = "Anti";
 
 
     /**
@@ -22,10 +25,11 @@ public class AntiTask extends Task{
      * @param duration   duration of task
      * @param date    used with startTime to cancel a Recurring task
      * */
-    public AntiTask(String name, String type, float startTime, float duration, int date){
+    public AntiTask(String name, String type, float startTime, float duration, int date, String taskType){
         // todo : implement constructor
-        super(name,type,startTime,duration);
+        super(name,type,startTime,duration,taskType);
         this.date = date;
+        this.taskType = taskType;
     }
 
     public AntiTask(){}
@@ -45,15 +49,16 @@ public class AntiTask extends Task{
 
         String inputName = new String();
 
+        StringBuilder sb = new StringBuilder();
+
          boolean validName = false;
          while(!validName) {
             System.out.println("Enter Recurring-Task Name to override: ");
             inputName = keyboard.nextLine().trim();
-            if (Schedule.recurringTaskMap.containsKey(inputName)) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("Anti-");
+            if (Schedule.hm.containsKey(inputName) && Schedule.hm.get(inputName).getTaskType().equals("Recurring")) {
+                sb.append("Anti_");  //"Anti_name_date"
                 sb.append(inputName);
-                setName(sb.toString());
+                sb.append("_");
                 validName = true;
                 }
             else
@@ -95,7 +100,7 @@ public class AntiTask extends Task{
          */
 
 
-        RecurringTask getInfo = Schedule.recurringTaskMap.get(inputName);
+        RecurringTask getInfo = (RecurringTask) Schedule.hm.get(inputName);
         float aStart = getInfo.getStartTime();
         float aDuratiom = getInfo.getDuration();
         setStartTime(aStart);
@@ -135,11 +140,15 @@ public class AntiTask extends Task{
             if(Main.verifyDate(iDate) && Main.verifyEndDate(recurStart, iDate) && Main.verifyEndDate(iDate, recurEnd))
             {
                 setDate(iDate);
+                sb.append(iDate);
+                setName(sb.toString());
                 validDate = true;
             }
             else
                 System.out.println("INVALID Date, Enter valid date values between Recurring Start and End Date");
         }
+
+        setTaskType(classType);
 
 
     }
@@ -149,7 +158,7 @@ public class AntiTask extends Task{
      * print all attributes of AntiTask
      * */
     public void view(){
-        System.out.println("Name: " + getName() +"\nType: " + getType() + "\nStart Time: " + getStartTime() + "\nDuration: " + getDuration() + "\nDate: " + getDate());
+        System.out.println("Name: " + getName() +"\nType: " + getType() + "\nStart Time: " + getStartTime() + "\nDuration: " + getDuration() + "\nDate: " + getDate() + "\nTask Type: " + getTaskType());
     }
 
 
@@ -271,6 +280,8 @@ public class AntiTask extends Task{
     {
         return date;
     }
+
+
 
     // todo : do we want to asd cancelRecurring??
 }

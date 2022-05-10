@@ -12,6 +12,9 @@ public class TransientTask extends Task {
     private int date;    // YYYYMMDD
     private String[] validTypes = {"Visit", "Shopping", "Appointment"};
 
+    private final String classType = "Transient";
+
+
     /**
      * constructor for a TransientTask
      * @param name   name of Transient task - must be unique
@@ -20,10 +23,11 @@ public class TransientTask extends Task {
      * @param duration   duration of task
      * @param date    used with startTime to cancel a Recurring task
      * */
-    public TransientTask(String name, String type, float startTime, float duration, int date){
+    public TransientTask(String name, String type, float startTime, float duration, int date, String taskType){
         // todo : implement constructor
-        super(name,type,startTime,duration);
+        super(name,type,startTime,duration, taskType);
         this.date = date;
+
     }
 
     public TransientTask() {}
@@ -131,6 +135,7 @@ public class TransientTask extends Task {
                 System.out.println("INVALID Date, Enter valid date values");
         }
 
+        setTaskType(classType);
 
     }
 
@@ -139,7 +144,7 @@ public class TransientTask extends Task {
      * print all attributes of TransientTask
      * */
     public void view(){
-        System.out.println("Name: " + getName() +"\nType: " + getType() + "\nStart Time: " + getStartTime() + "\nDuration: " + getDuration() + "\nDate: " + getDate());
+        System.out.println("Name: " + getName() +"\nType: " + getType() + "\nStart Time: " + getStartTime() + "\nDuration: " + getDuration() + "\nDate: " + getDate() + "\nTask Type: " + getTaskType());
     }
 
     /**
@@ -280,6 +285,7 @@ public class TransientTask extends Task {
     {
         return date;
     }
+
 
 
 }

@@ -9,23 +9,22 @@ public class testingTasks {
 
         //System.out.println(Main.verifyDate(20220701));
 
-        //createRecurringTask();
+        createRecurringTask();
 
         createTransientTask();
-        //createTransientTask();
 
-        //createAntiTask();
+
+        createAntiTask();
 
     }
 
     private static void createRecurringTask()
     {
-        RecurringTask rec = new RecurringTask("cs356", "Class",17,1,20220505,20220522,1);
+        RecurringTask rec = new RecurringTask("cs356", "Class",17,1,20220505,20220522,1, "Recurring");
         //rec.create();
         rec.view();
 
         Schedule.hm.put(rec.getName(), rec);
-        Schedule.recurringTaskMap.put(rec.getName(), rec);
 
 
     }
@@ -43,13 +42,12 @@ public class testingTasks {
 
     private static void createTransientTask()
     {
-        TransientTask create = new TransientTask();
-        create.create();
+        TransientTask create = new TransientTask("dentist", "Appointment", 11,1,20220606,"Transient");
+
+       // TransientTask create = new TransientTask();
+        //create.create();
         Schedule.hm.put(create.getName(), create);
         create.view();
-        Main.viewSchedule();
-        //create.edit();
-
 
     }
 
