@@ -225,6 +225,8 @@ public class RecurringTask extends Task {
                 System.out.println("Enter Task Name: ");
                 boolean validName = false;
                 while(!validName) {
+                    //advance one line to properly accept newline input
+                    keyboard.nextLine();
                     String inputName = keyboard.nextLine().trim();
                     if (!Schedule.hm.containsKey(inputName) && inputName.length() <= 30) {
                         validName = true;
