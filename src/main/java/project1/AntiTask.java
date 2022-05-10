@@ -1,5 +1,7 @@
 package project1;
 
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AntiTask extends Task{
@@ -56,7 +58,7 @@ public class AntiTask extends Task{
             System.out.println("Enter Recurring-Task Name to override: ");
             inputName = keyboard.nextLine().trim();
             if (Schedule.hm.containsKey(inputName) && Schedule.hm.get(inputName).getTaskType().equals("Recurring")) {
-                sb.append("Anti_");  //"Anti_name_date"
+                sb.append("anti_");  //"anti_name_date"
                 sb.append(inputName);
                 sb.append("_");
                 validName = true;
@@ -102,9 +104,9 @@ public class AntiTask extends Task{
 
         RecurringTask getInfo = (RecurringTask) Schedule.hm.get(inputName);
         float aStart = getInfo.getStartTime();
-        float aDuratiom = getInfo.getDuration();
+        float aDuration = getInfo.getDuration();
         setStartTime(aStart);
-        setDuration(aDuratiom);
+        setDuration(aDuration);
 
         /*
         //duration time input and verification
@@ -137,6 +139,7 @@ public class AntiTask extends Task{
             System.out.println("Enter Date (YYYYMMDD): ");
             int iDate = keyboard.nextInt();
 
+            //verify if anti task is within start and enddate
             if(Main.verifyDate(iDate) && Main.verifyEndDate(recurStart, iDate) && Main.verifyEndDate(iDate, recurEnd))
             {
                 setDate(iDate);
@@ -167,7 +170,34 @@ public class AntiTask extends Task{
      * */
     public void delete()
     {
-        Schedule.hm.remove(getName());
+        Boolean canDelete = true;
+        for(Map.Entry mapElement : Schedule.hm.entrySet())
+        {
+            String key = (String)mapElement.getKey();
+            if(Schedule.hm.get(key).getTaskType().equals("Transient"))
+            {
+                TransientTask check = (TransientTask) Schedule.hm.get(key);
+                if(getDate() == check.getDate() && Main.checkOverlapTime(getStartTime(),getDuration(), check.getStartTime(), check.getDuration()))
+                {
+                    System.out.println("Anti Task overlaps with a Transient Task, Cannot be deleled.");
+                    canDelete = false;
+                    break;
+                }
+            }
+            else if(Schedule.hm.get(key).getTaskType().equals("Recurring"))
+            {
+                RecurringTask check1 = (RecurringTask) Schedule.hm.get(key);
+                if(Main.checkOverlapTime(getStartTime(),getDuration(), check1.getStartTime(), getDuration()))
+                {
+
+                }
+            }
+
+        }
+
+        if(canDelete) {
+            Schedule.hm.remove(getName());
+        }
     }
 
     /**

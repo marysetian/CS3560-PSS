@@ -89,10 +89,10 @@ public class Main {
 					break;
 
 				case 2:
-					RecurringTask test1 = new RecurringTask();
-					test1.create();
-					test1.view();
-
+					//RecurringTask test1 = new RecurringTask();
+					//test1.create();
+					//test1.view();
+					createRecurringTask();
 					//test1.edit();
 					//test1.view();
 					// Recurring Task
@@ -283,9 +283,38 @@ public class Main {
 	{
 		AntiTask at = new AntiTask();
 		at.create();
-		System.out.println("Anti Task " + at.getName() + " added to Schedule");
+
+		//verify no overlaps here
 		Schedule.hm.put(at.getName(), at);
+		System.out.println("Anti Task " + at.getName() + " added to Schedule");
 		at.view();
+	}
+
+	public static void createRecurringTask()
+	{
+		RecurringTask rt = new RecurringTask();
+		rt.create();
+		Schedule.hm.put(rt.getName(), rt);
+		System.out.println("Recurring Task " + rt.getName() + " added to Schedule");
+		rt.view();
+
+	}
+
+	//if true it does overlap
+	public static boolean checkOverlapTime(float start1, float dur1, float start2, float dur2)
+	{
+		if(start1 == start2)
+			return true;
+		else if(start1 < start2 + dur2 && start2 + dur2 < start1 + dur1)
+			return true;
+		else if(start2 < start1 + dur1 && start1 + dur1 < start2 + dur2)
+			return true;
+		return false;
+	}
+
+	public static boolean checkOverlapDate(int startDate, int endDate, int date)
+	{
+		return false;
 	}
 }
 
