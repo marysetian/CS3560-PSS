@@ -22,7 +22,8 @@ public class Main {
 				+ "3. delete task\n"
 				+ "4. edit task\n"
 				+ "5. read schedule from file\n"
-				+ "6. exit program\n");
+				+ "6. write schedule to file\n"
+				+ "7. exit program\n");
 		try (Scanner keyboard = new Scanner(System.in)) {
 			int choice = keyboard.nextInt();
 			switch (choice) {
@@ -46,11 +47,43 @@ public class Main {
 					// read schedule from file
 					break;
 				case 6:
+					// write to schedule
+					writeMenu();
+				case 7:
 					// exit program
 					break;
 				default:
 					System.out.println("Invalid input, please try again\n");
 					chooseUse();
+			}
+		}
+	}
+
+	public static void writeMenu(){
+		System.out.println("Please choose which type of schedule you would like to print:\n"
+				+ "1. daily schedule\n"
+				+ "2. weekly schedule\n"
+				+ "3. monthly schedule\n"
+				+ "4. exit program\n");
+
+		try (Scanner keyboard = new Scanner(System.in)) {
+			int choice = keyboard.nextInt();
+			switch (choice) {
+				case 1:
+					// daily schedule  -- Mary
+					break;
+				case 2:
+					// weekly schedule -- Linda
+					break;
+				case 3:
+					// monthly schedule  -- Alondra
+					break;
+				case 4:
+					// exit program
+					break;
+				default:
+					System.out.println("Invalid input, please try again\n");
+					writeMenu();
 			}
 		}
 	}
