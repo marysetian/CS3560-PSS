@@ -63,6 +63,5 @@ public class Task {
         return duration;
     }
 
-//    public void view(){}
 
 }

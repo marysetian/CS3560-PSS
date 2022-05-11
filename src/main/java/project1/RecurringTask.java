@@ -8,13 +8,15 @@ public class RecurringTask extends Task {
 //    private String type;
 //    private float startTime;
 //    private float duration;
-
+    //
+    //
 
     private int startDate;  //YYYYMMDD
     private int endDate;    //YYYYMMDD
     private int frequency;  // 1 - daily , 7 weekly
     private boolean available = false;  // true = anti-task exists for this task
     private String[] validTypes = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal"};
+
 
     /**
      * constructor for a Recurring Task
