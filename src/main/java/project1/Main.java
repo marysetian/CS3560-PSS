@@ -23,7 +23,8 @@ public class Main {
 				+ "3. delete task\n"
 				+ "4. edit task\n"
 				+ "5. read schedule from file\n"
-				+ "6. exit program\n");
+				+ "6. write schedule to a file\n"
+				+ "7. exit program\n");
 		try (Scanner keyboard = new Scanner(System.in)) {
 			int choice = keyboard.nextInt();
 			switch (choice) {
@@ -47,11 +48,46 @@ public class Main {
 					// read schedule from file
 					break;
 				case 6:
+					createWriteMenu();
+
+					break;
+				case 7:
 					// exit program
 					break;
 				default:
 					System.out.println("Invalid input, please try again\n");
 					chooseUse();
+			}
+		}
+	}
+
+
+	public static void createWriteMenu(){
+		// write schedule to file
+		System.out.println("Please choose which schedule you would like to print to file: \n"
+				+ "1. Daily\n"
+				+ "2. Weekly\n"
+				+ "3. Monthly\n" );
+
+		try (Scanner kb = new Scanner(System.in)) {
+			int opt = kb.nextInt();
+			switch (opt) {
+				case 1:
+					// daily schedule  -- Mary
+
+					break;
+				case 2:
+					//Weekly schedule  -- Linda
+
+
+					break;
+				case 3:
+					// monthly schedule -- Alondra
+
+					break;
+				default:
+					System.out.println("Invalid input, please try again\n");
+					chooseUse();													/// need to update
 			}
 		}
 	}
@@ -73,10 +109,13 @@ public class Main {
 
 					TransientTask Test1 = new TransientTask();
 					Test1.create();
-					Test1.view();
+					Schedule.hm.put(Test1.getName(), Test1);
 
-					Test1.edit();
-					Test1.view();
+
+//					Test1.view();
+//
+//					Test1.edit();
+//					Test1.view();
 
 
 					break;
@@ -118,6 +157,10 @@ public class Main {
 
 	}
 
+	private static void createSchedule() {
+
+	}
+
 	/**
 	 * verifies the date of task is valid
 	 * @param date		date in form YYYYMMDD given by user
@@ -140,7 +183,6 @@ public class Main {
 
 		return false;
 	}
-
 
 	/**
 	 * verifies the given endDate is greater than or equal to startDate
