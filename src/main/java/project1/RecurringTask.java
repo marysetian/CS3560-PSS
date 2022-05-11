@@ -129,7 +129,7 @@ public class RecurringTask extends Task {
                 return;
             }
         }
-        while(true ) {
+        while(true) {
             System.out.println("Enter Duration hour: ");
             float durHour = (keyboard.nextFloat());
             System.out.println("Enter Duration minute: ");

@@ -170,7 +170,7 @@ public class AntiTask extends Task{
      * */
     public void delete()
     {
-        Boolean canDelete = true;
+        Boolean canDelete = true; boolean break1 = false;
         for(Map.Entry mapElement : Schedule.hm.entrySet())
         {
             String key = (String)mapElement.getKey();
@@ -181,22 +181,36 @@ public class AntiTask extends Task{
                 {
                     System.out.println("Anti Task overlaps with a Transient Task, Cannot be deleled.");
                     canDelete = false;
-                    break;
+                    break1 = true;
                 }
             }
             else if(Schedule.hm.get(key).getTaskType().equals("Recurring"))
             {
                 RecurringTask check1 = (RecurringTask) Schedule.hm.get(key);
-                if(Main.checkOverlapTime(getStartTime(),getDuration(), check1.getStartTime(), getDuration()))
+                String nn = getName();
+                String ss = nn.substring(5, nn.length() - 9);
+                if(Main.checkOverlapTime(getStartTime(),getDuration(), check1.getStartTime(), check1.getDuration()))
                 {
-
+                    //verify anti task date is within recurring
+                    if(Main.verifyEndDate(check1.getStartDate(), getDate()) && Main.verifyEndDate(getDate(), check1.getEndDate()))
+                    {
+                        if(Main.checkOverlapDate(check1.getStartDate(), check1.getEndDate(), getDate(), check1.getFrequency()) && !ss.equals(check1.getName()))
+                        {
+                            System.out.println("Anti Task overlaps with a Recurring Task, Cannot be deleted.");
+                            canDelete = false;
+                            break1 = true;
+                        }
+                    }
                 }
             }
+            if(break1)
+                break;
 
         }
 
         if(canDelete) {
             Schedule.hm.remove(getName());
+            System.out.println("Anti-Task Deleted");
         }
     }
 

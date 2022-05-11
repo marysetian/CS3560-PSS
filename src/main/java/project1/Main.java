@@ -305,15 +305,52 @@ public class Main {
 	{
 		if(start1 == start2)
 			return true;
-		else if(start1 < start2 + dur2 && start2 + dur2 < start1 + dur1)
+		else if(start1 < start2 && start2 < start1 + dur1)
 			return true;
-		else if(start2 < start1 + dur1 && start1 + dur1 < start2 + dur2)
+		else if(start2 < start1 && start1 < start2 + dur2)
 			return true;
 		return false;
 	}
 
-	public static boolean checkOverlapDate(int startDate, int endDate, int date)
+	public static boolean checkOverlapDate(int startDate, int endDate, int date, int freq)
 	{
+		int[] days = {31,28,31,30,31,30,31,31,30,31,30,31};
+		int newDate = startDate;
+		while(newDate <= endDate)
+		{
+			String tempDate = String.valueOf(newDate);
+			int year = Integer.valueOf(tempDate.substring(0,4));
+			int month = Integer.valueOf(tempDate.substring(4,6));;
+			int day = Integer.valueOf(tempDate.substring(6,8));;
+			if(newDate == date)
+				return true;
+
+			day = day + freq;
+			if(day > days[month - 1])
+			{
+				day = day - days[month -1];
+				if(month < 12)
+					month++;
+				else{
+					month = 1;
+					year++;
+				}
+
+			}
+			StringBuilder sb = new StringBuilder();
+			sb.append(year);
+			if(month < 10)
+				sb.append("0");
+			sb.append(month);
+			if(day < 10)
+				sb.append("0");
+			sb.append(day);
+
+			newDate = Integer.valueOf(sb.toString());
+			//System.out.println(newDate);
+
+		}
+
 		return false;
 	}
 }
