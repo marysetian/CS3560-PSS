@@ -134,6 +134,18 @@ public class Main {
 		int month = Integer.valueOf(tempDate.substring(4,6));;
 		int day = Integer.valueOf(tempDate.substring(6,8));;
 
+		if(year >= currentYear && month >= currentMonth)
+		{
+			if(month == currentMonth)
+			{
+				if(day >= currentDay)
+					return true;
+				else
+					return false;
+			}
+			return true;
+		}
+
 		if( year >= currentYear && month >= currentMonth && day >= currentDay)
 			return true;
 
@@ -235,6 +247,101 @@ public class Main {
 			default:
 				return false;
 		}
+	}
+
+	public static void viewTask()
+	{
+		Scanner keyboard = new Scanner(System.in);
+		System.out.println("Current Tasks");
+		System.out.println(Schedule.hm.keySet());
+		System.out.println("Select a Task to View: ");
+		String view = keyboard.nextLine().trim();
+
+		Schedule.hm.get(view).view();
+	}
+
+	public static void createTransientTask()
+	{
+		TransientTask tt = new TransientTask();
+		tt.create();
+		Schedule.hm.put(tt.getName(), tt);
+		System.out.println("Transient Task " + tt.getName() + " added to Schedule");
+		tt.view();
+	}
+
+	public static void createAntiTask()
+	{
+		AntiTask at = new AntiTask();
+		at.create();
+
+		//verify no overlaps here
+		Schedule.hm.put(at.getName(), at);
+		System.out.println("Anti Task " + at.getName() + " added to Schedule");
+		at.view();
+	}
+
+	public static void createRecurringTask()
+	{
+		RecurringTask rt = new RecurringTask();
+		rt.create();
+		Schedule.hm.put(rt.getName(), rt);
+		System.out.println("Recurring Task " + rt.getName() + " added to Schedule");
+		rt.view();
+
+	}
+
+	//if true it does overlap
+	public static boolean checkOverlapTime(float start1, float dur1, float start2, float dur2)
+	{
+		if(start1 == start2)
+			return true;
+		else if(start1 < start2 && start2 < start1 + dur1)
+			return true;
+		else if(start2 < start1 && start1 < start2 + dur2)
+			return true;
+		return false;
+	}
+
+	public static boolean checkOverlapDate(int startDate, int endDate, int date, int freq)
+	{
+		int[] days = {31,28,31,30,31,30,31,31,30,31,30,31};
+		int newDate = startDate;
+		while(newDate <= endDate)
+		{
+			String tempDate = String.valueOf(newDate);
+			int year = Integer.valueOf(tempDate.substring(0,4));
+			int month = Integer.valueOf(tempDate.substring(4,6));;
+			int day = Integer.valueOf(tempDate.substring(6,8));;
+			if(newDate == date)
+				return true;
+
+			day = day + freq;
+			if(day > days[month - 1])
+			{
+				day = day - days[month -1];
+				if(month < 12)
+					month++;
+				else{
+					month = 1;
+					year++;
+				}
+
+			}
+			StringBuilder sb = new StringBuilder();
+			sb.append(year);
+			if(month < 10)
+				sb.append("0");
+			sb.append(month);
+			if(day < 10)
+				sb.append("0");
+			sb.append(day);
+
+			newDate = Integer.valueOf(sb.toString());
+			//System.out.println(newDate);
+
+		}
+
+		return false;
 	}
 }
 

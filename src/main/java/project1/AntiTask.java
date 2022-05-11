@@ -53,8 +53,8 @@ public class AntiTask extends Task{
 
         StringBuilder sb = new StringBuilder();
 
-         boolean validName = false;
-         while(!validName) {
+        boolean validName = false;
+        while(!validName) {
             System.out.println("Enter Recurring-Task Name to override: ");
             inputName = keyboard.nextLine().trim();
             if (Schedule.hm.containsKey(inputName) && Schedule.hm.get(inputName).getTaskType().equals("Recurring")) {
@@ -62,13 +62,13 @@ public class AntiTask extends Task{
                 sb.append(inputName);
                 sb.append("_");
                 validName = true;
-                }
+            }
             else
             {
-             System.out.println("Recurring Task Name does not exist, enter valid name");
+                System.out.println("Recurring Task Name does not exist, enter valid name");
             }
 
-            }
+        }
 
 
 
@@ -82,10 +82,8 @@ public class AntiTask extends Task{
         while(!validStartTime) {
             System.out.println("Enter start hour (1-12): ");
             float startHour = (keyboard.nextFloat());
-
             System.out.println("Enter start minute: ");
             float startMinute = (keyboard.nextFloat());
-
             System.out.println("Enter start am or pm: ");
             String dayTime = (keyboard.next());
             float iStart = Main.verifyStartTime(startHour, startMinute, dayTime);
@@ -97,8 +95,6 @@ public class AntiTask extends Task{
             else
                 System.out.println("INVALID Start Time, Enter a Start Hour between 1 - 12 and Start Minute between 0 - 59");
         }
-
-
          */
 
 
@@ -114,12 +110,9 @@ public class AntiTask extends Task{
         while(!validDuration) {
             System.out.println("Enter Duration hour: ");
             float durHour = (keyboard.nextFloat());
-
             System.out.println("Enter Duration minute: ");
             float durMinute = (keyboard.nextFloat());
-
             float iDuration = Main.verifyDuration(durHour, durMinute);
-
             if(iDuration != 0) {
                 setDuration(iDuration);
                 validDuration = true;
@@ -127,8 +120,6 @@ public class AntiTask extends Task{
             else
                 System.out.println("INVALID Duration, Enter numbers greater than 0 for Duration Hour and Minute");
         }
-
-
          */
 
         int recurStart = getInfo.getStartDate();

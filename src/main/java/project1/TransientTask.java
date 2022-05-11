@@ -1,5 +1,6 @@
 package project1;
 
+
 import java.util.Scanner;
 
 public class TransientTask extends Task {
@@ -12,6 +13,9 @@ public class TransientTask extends Task {
     private int date;    // YYYYMMDD
     private String[] validTypes = {"Visit", "Shopping", "Appointment"};
 
+    private final String classType = "Transient";
+
+
     /**
      * constructor for a TransientTask
      * @param name   name of Transient task - must be unique
@@ -20,10 +24,11 @@ public class TransientTask extends Task {
      * @param duration   duration of task
      * @param date    used with startTime to cancel a Recurring task
      * */
-    public TransientTask(String name, String type, float startTime, float duration, int date){
+    public TransientTask(String name, String type, float startTime, float duration, int date, String taskType){
         // todo : implement constructor
-        super(name,type,startTime,duration);
+        super(name,type,startTime,duration, taskType);
         this.date = date;
+
     }
 
     public TransientTask() {}
@@ -46,19 +51,13 @@ public class TransientTask extends Task {
             System.out.println("Enter Transient Task Name: ");
             String inputName = keyboard.nextLine().trim();
             if (Schedule.hm.containsKey(inputName)) {
-                System.out.println("Invalid name: schedule contains duplicate.\n"
-                        + "Retry name entry? 1. Yes 2. No\n");
-                int choice = keyboard.nextInt();
-                if (choice == 1) {
-                    continue;
-                }
-                else {
-                    keyboard.close();
-                    return;
-                }
+                System.out.println("Invalid name: schedule contains duplicate.");
+
             }
-            validName = true;
-            setName(inputName);
+            else {
+                validName = true;
+                setName(inputName);
+            }
         }
 
         boolean setValid = false;
@@ -137,6 +136,8 @@ public class TransientTask extends Task {
                 System.out.println("INVALID Date, Enter valid date values");
         }
 
+        setTaskType(classType);
+
     }
 
 
@@ -144,13 +145,16 @@ public class TransientTask extends Task {
      * print all attributes of TransientTask
      * */
     public void view(){
-        System.out.println("Name: " + getName() +"\nType: " + getType() + "\nStart Time: " + getStartTime() + "\nDuration: " + getDuration() + "\nDate: " + getDate());
+        System.out.println("Name: " + getName() +"\nType: " + getType() + "\nStart Time: " + getStartTime() + "\nDuration: " + getDuration() + "\nDate: " + getDate() + "\nTask Type: " + getTaskType());
     }
 
     /**
      * delete anti-task iff there is no transient task overlapping the recurring task corresponding to this antitask
      * */
-    public void delete(){}
+    public void delete()
+    {
+        Schedule.hm.remove(getName());
+    }
 
     /**
      * displays a menu for a user to edit any task attribute
@@ -282,6 +286,5 @@ public class TransientTask extends Task {
     {
         return date;
     }
-
 
 }

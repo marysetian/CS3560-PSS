@@ -1,6 +1,7 @@
 package project1;
 
 
+
 import javax.swing.plaf.synth.SynthCheckBoxUI;
 import java.util.Scanner;
 
@@ -11,7 +12,7 @@ public class testingTasks {
 
         //System.out.println(Main.checkOverlapDate(20220101,20230115,20230115,1));
         //System.out.println(Main.verifyDate(20220701));
-        createRecurringTask();
+//        createRecurringTask();
         createTransientTask();
 
 
@@ -19,17 +20,17 @@ public class testingTasks {
 
     }
 
-    private static void createRecurringTask()
-    {
-        RecurringTask rec = new RecurringTask("cs356", "Class",17,1,20220510,20220705,7, "Recurring");
-        //RecurringTask rec = new RecurringTask();
-        //rec.create();
-        rec.view();
-
-        Schedule.hm.put(rec.getName(), rec);
-
-
-    }
+//    private static void createRecurringTask()
+//    {
+//        RecurringTask rec = new RecurringTask("cs356", "Class",17,1,20220510,20220705,7, "Recurring");
+//        //RecurringTask rec = new RecurringTask();
+//        //rec.create();
+//        rec.view();
+//
+//        Schedule.hm.put(rec.getName(), rec);
+//
+//
+//    }
 
     private static void createAntiTask() {
         AntiTask test1 = new AntiTask("anti_cs356_20220522", "Cancellation", 17, 1, 20220517, "Anti");
