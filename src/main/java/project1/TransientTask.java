@@ -1,5 +1,6 @@
 package project1;
 
+import java.util.Map;
 import java.util.Scanner;
 
 public class TransientTask extends Task {
@@ -135,7 +136,52 @@ public class TransientTask extends Task {
                 System.out.println("INVALID Date, Enter valid date values");
         }
 
-        setTaskType(classType);
+
+        boolean set = true; boolean break1 = false;
+        for(Map.Entry mapElement : Schedule.hm.entrySet())
+        {
+            String key = (String) mapElement.getKey();
+            if (Schedule.hm.get(key).getTaskType().equals("Transient"))
+            {
+                TransientTask check = (TransientTask) Schedule.hm.get(key);
+                if(getDate() == check.getDate() && Main.checkOverlapTime(getStartTime(), getDuration(),check.getStartTime(), check.getDuration()))
+                {
+                    System.out.println("Task Overlaps with Transient Task, Cannot be added to Schedule");
+                    set = false;
+                    break1 = true;
+                }
+            }
+            else if(Schedule.hm.get(key).getTaskType().equals("Recurring"))
+            {
+                RecurringTask check1 = (RecurringTask) Schedule.hm.get(key);
+                if(Main.verifyEndDate(check1.getStartDate(), getDate()) && Main.verifyEndDate(getDate(), check1.getEndDate()))
+                {
+                    if(Main.checkOverlapTime(getStartTime(),getDuration(), check1.getStartTime(), check1.getDuration()))
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("anti_");
+                        sb.append(check1.getName()); sb.append("_");
+                        sb.append(getDate());
+                        //System.out.println(sb.toString());
+                        if(Schedule.hm.containsKey(sb.toString()))
+                        {
+                            System.out.println("Anti Task Exists, Added Transient to Schedule");
+                            break1 = true;
+                        }
+                        else
+                        {
+                            System.out.println("Task Overlaps with Recurring Task, Cannot be added to Schedule");
+                            set = false;
+                            break1 = true;
+                        }
+                    }
+                }
+            }
+            if(break1)
+                break;
+        }
+        if(set)
+            setTaskType(classType);
 
     }
 
@@ -166,7 +212,7 @@ public class TransientTask extends Task {
             view();
 
             System.out.println("Select an attribute to edit or exit: ");
-            System.out.println("0. Exit \n1. Name\n2. Type \n3. Start Time \n4. Duration \n5. Date");
+            System.out.println("0. Exit \n1. Name\n2. Type \n3. Start Time and Duration \n4. Date");
 
             Scanner keyboard = new Scanner(System.in);
             int input = Integer.parseInt(keyboard.nextLine());
@@ -217,7 +263,7 @@ public class TransientTask extends Task {
                     }
                     break;
                 case 3:
-                    boolean validStartTime = false;
+                    boolean validStartTime = false; float iStart = 0;
                     while(!validStartTime) {
                         System.out.println("Enter New start hour (1-12): ");
                         float startHour = (keyboard.nextFloat());
@@ -227,49 +273,148 @@ public class TransientTask extends Task {
 
                         System.out.println("Enter New start (am/pm): ");
                         String dayTime = (keyboard.next());
-                        float iStart = Main.verifyStartTime(startHour, startMinute, dayTime);
+                        iStart = Main.verifyStartTime(startHour, startMinute, dayTime);
                         if(iStart != 0)
                         {
-                            setStartTime(iStart);
+                           // setStartTime(iStart);
                             validStartTime = true;
                         }
                         else
                             System.out.println("INVALID Start Time, Enter a Start Hour between 1 - 12 and Start Minute between 0 - 59");
                     }
+                        boolean validDuration = false; float iDuration = 0;
+                        while(!validDuration) {
+                            System.out.println("Enter New Duration hour: ");
+                            float durHour = (keyboard.nextFloat());
+
+                            System.out.println("Enter New Duration minute: ");
+                            float durMinute = (keyboard.nextFloat());
+
+                            iDuration = Main.verifyDuration(durHour, durMinute);
+
+                            if(iDuration != 0) {
+                                //setDuration(iDuration);
+                                validDuration = true;
+                            }
+                            else
+                                System.out.println("INVALID Duration, Enter numbers greater than 0 for Duration Hour and Minute");
+                        }
+                        //if starttime and duration overlap with other task dont make changes
+                        //else can change
+                    boolean set = true; boolean break1 = false;
+                    for(Map.Entry mapElement : Schedule.hm.entrySet())
+                    {
+                        String key = (String) mapElement.getKey();
+                        if (Schedule.hm.get(key).getTaskType().equals("Transient") && !key.equals(getName()))
+                        {
+                            TransientTask check = (TransientTask) Schedule.hm.get(key);
+                            if(getDate() == check.getDate() && Main.checkOverlapTime(iStart, iDuration,check.getStartTime(), check.getDuration()))
+                            {
+                                System.out.println("Task Overlaps with Transient Task, Cannot be added to Schedule");
+                                set = false;
+                                break1 = true;
+                            }
+                        }
+                        else if(Schedule.hm.get(key).getTaskType().equals("Recurring"))
+                        {
+                            RecurringTask check1 = (RecurringTask) Schedule.hm.get(key);
+                            if(Main.verifyEndDate(check1.getStartDate(), getDate()) && Main.verifyEndDate(getDate(), check1.getEndDate()))
+                            {
+                                if(Main.checkOverlapTime(iStart,iDuration, check1.getStartTime(), check1.getDuration()))
+                                {
+                                    StringBuilder sb = new StringBuilder();
+                                    sb.append("anti_");
+                                    sb.append(check1.getName()); sb.append("_");
+                                    sb.append(getDate());
+                                    //System.out.println(sb.toString());
+                                    if(Schedule.hm.containsKey(sb.toString()))
+                                    {
+                                       // System.out.println("Anti Task Exists, Added Transient to Schedule");
+                                        break1 = true;
+                                    }
+                                    else
+                                    {
+                                        System.out.println("Task Overlaps with Recurring Task, Cannot be added to Schedule");
+                                        set = false;
+                                        break1 = true;
+                                    }
+                                }
+                            }
+                        }
+                        if(break1)
+                            break;
+                    }
+                    if(set)
+                    {
+                        setStartTime(iStart);
+                        setDuration(iDuration);
+                    }
+                    else
+                        System.out.println("Cannot Edit Start Time and Duration, Overlaps with other Task");
                     break;
                 case 4:
-                    boolean validDuration = false;
-                    while(!validDuration) {
-                        System.out.println("Enter New Duration hour: ");
-                        float durHour = (keyboard.nextFloat());
-
-                        System.out.println("Enter New Duration minute: ");
-                        float durMinute = (keyboard.nextFloat());
-
-                        float iDuration = Main.verifyDuration(durHour, durMinute);
-
-                        if(iDuration != 0) {
-                            setDuration(iDuration);
-                            validDuration = true;
-                        }
-                        else
-                            System.out.println("INVALID Duration, Enter numbers greater than 0 for Duration Hour and Minute");
-                    }
-                    break;
-                case 5:
-                    boolean validDate = false;
+                    boolean validDate = false; int iDate = 0; boolean setDate = true;
                     while(!validDate) {
                         System.out.println("Enter New Date (YYYYMMDD): ");
-                        int iDate = keyboard.nextInt();
+                        iDate = keyboard.nextInt();
 
                         if(Main.verifyDate(iDate))
                         {
-                            setDate(iDate);
+                            //setDate(iDate);
                             validDate = true;
                         }
                         else
                             System.out.println("INVALID Date, Enter valid date values");
                     }
+                    boolean break2 = false;
+                    for(Map.Entry mapElement : Schedule.hm.entrySet())
+                    {
+                        String key = (String) mapElement.getKey();
+                        if (Schedule.hm.get(key).getTaskType().equals("Transient"))
+                        {
+                            TransientTask check = (TransientTask) Schedule.hm.get(key);
+                            if(iDate == check.getDate() && Main.checkOverlapTime(getStartTime(), getDuration(),check.getStartTime(), check.getDuration()))
+                            {
+                                System.out.println("Task Overlaps with Transient Task, Cannot be added to Schedule");
+                                set = false;
+                                break2 = true;
+                            }
+                        }
+                        else if(Schedule.hm.get(key).getTaskType().equals("Recurring"))
+                        {
+                            RecurringTask check1 = (RecurringTask) Schedule.hm.get(key);
+                            if(Main.verifyEndDate(check1.getStartDate(), iDate) && Main.verifyEndDate(iDate, check1.getEndDate()))
+                            {
+                                if(Main.checkOverlapTime(getStartTime(),getDuration(), check1.getStartTime(), check1.getDuration()))
+                                {
+                                    StringBuilder sb = new StringBuilder();
+                                    sb.append("anti_");
+                                    sb.append(check1.getName()); sb.append("_");
+                                    sb.append(getDate());
+                                    //System.out.println(sb.toString());
+                                    if(Schedule.hm.containsKey(sb.toString()))
+                                    {
+                                        System.out.println("Anti Task Exists, Added Transient to Schedule");
+                                        break2 = true;
+                                    }
+                                    else
+                                    {
+                                        System.out.println("Task Overlaps with Recurring Task, Cannot be added to Schedule");
+                                        setDate = false;
+                                        break2 = true;
+                                    }
+                                }
+                            }
+                        }
+                        if(break2)
+                            break;
+                    }
+
+                    if(setDate)
+                        setDate(iDate);
+                    else
+                        System.out.println("Cannot Edit Date, Overlaps with other Task");
+
                     break;
             }
         }

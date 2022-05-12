@@ -274,9 +274,13 @@ public class Main {
 	{
 		TransientTask tt = new TransientTask();
 		tt.create();
-		Schedule.hm.put(tt.getName(), tt);
-		System.out.println("Transient Task " + tt.getName() + " added to Schedule");
-		tt.view();
+		if(tt.getTaskType().equals("Transient")) {
+			Schedule.hm.put(tt.getName(), tt);
+			System.out.println("Transient Task " + tt.getName() + " added to Schedule");
+			tt.view();
+		}
+		else
+			System.out.println("Task Creation Failed");
 	}
 
 	public static void createAntiTask()

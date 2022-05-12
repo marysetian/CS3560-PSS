@@ -76,60 +76,12 @@ public class AntiTask extends Task{
         //anti task is always Cancellation
         setType(validType);
 
-        //start time input and verification
-        /*
-        boolean validStartTime = false;
-        while(!validStartTime) {
-            System.out.println("Enter start hour (1-12): ");
-            float startHour = (keyboard.nextFloat());
-
-            System.out.println("Enter start minute: ");
-            float startMinute = (keyboard.nextFloat());
-
-            System.out.println("Enter start am or pm: ");
-            String dayTime = (keyboard.next());
-            float iStart = Main.verifyStartTime(startHour, startMinute, dayTime);
-            if(iStart != 0)
-            {
-                setStartTime(iStart);
-                validStartTime = true;
-            }
-            else
-                System.out.println("INVALID Start Time, Enter a Start Hour between 1 - 12 and Start Minute between 0 - 59");
-        }
-
-
-         */
-
-
         RecurringTask getInfo = (RecurringTask) Schedule.hm.get(inputName);
         float aStart = getInfo.getStartTime();
         float aDuration = getInfo.getDuration();
         setStartTime(aStart);
         setDuration(aDuration);
 
-        /*
-        //duration time input and verification
-        boolean validDuration = false;
-        while(!validDuration) {
-            System.out.println("Enter Duration hour: ");
-            float durHour = (keyboard.nextFloat());
-
-            System.out.println("Enter Duration minute: ");
-            float durMinute = (keyboard.nextFloat());
-
-            float iDuration = Main.verifyDuration(durHour, durMinute);
-
-            if(iDuration != 0) {
-                setDuration(iDuration);
-                validDuration = true;
-            }
-            else
-                System.out.println("INVALID Duration, Enter numbers greater than 0 for Duration Hour and Minute");
-        }
-
-
-         */
 
         int recurStart = getInfo.getStartDate();
         int recurEnd = getInfo.getEndDate();
@@ -200,6 +152,7 @@ public class AntiTask extends Task{
                             canDelete = false;
                             break1 = true;
                         }
+
                     }
                 }
             }
@@ -218,100 +171,7 @@ public class AntiTask extends Task{
      * displays a menu for a user to edit any task attribute
      * */
     public void edit() {
-        System.out.println("\t\t\t\t\t\tEDIT ANTI TASK");
-        System.out.println("--------------------------------------------------------------------------------");
-        while (true) {
-            System.out.println("Current Task Attributes:");
-            view();
 
-            System.out.println("Select an attribute to edit or exit: ");
-            System.out.println("0. Exit \n1. Name\n2. Start Time \n3. Duration \n4. Date");
-
-            Scanner keyboard = new Scanner(System.in);
-            int input = Integer.parseInt(keyboard.nextLine());
-
-            if(input == 0)
-                break;
-
-            switch (input) {
-                case 1:
-                    boolean validName = false;
-                    while(!validName) {
-                        System.out.println("Enter New Anti-Task Name: ");
-                        String inputName = keyboard.nextLine().trim();
-                        if (Schedule.hm.containsKey(inputName)) {
-                            System.out.println("Invalid name: schedule contains duplicate.\n"
-                                    + "Retry name entry? 1. Yes 2. No\n");
-                            int choice = keyboard.nextInt();
-                            if (choice == 1) {
-                                continue;
-                            }
-                            else {
-                                keyboard.close();
-                                return;
-                            }
-                        }
-                        validName = true;
-                        setName(inputName);
-                    }
-                    break;
-                case 2:
-                    boolean validStartTime = false;
-                    while(!validStartTime) {
-                        System.out.println("Enter New start hour (1-12): ");
-                        float startHour = (keyboard.nextFloat());
-
-                        System.out.println("Enter New start minute (0-59): ");
-                        float startMinute = (keyboard.nextFloat());
-
-                        System.out.println("Enter New start (am/pm): ");
-                        String dayTime = (keyboard.next());
-                        float iStart = Main.verifyStartTime(startHour, startMinute, dayTime);
-                        if(iStart != 0)
-                        {
-                            setStartTime(iStart);
-                            validStartTime = true;
-                        }
-                        else
-                            System.out.println("INVALID Start Time, Enter a Start Hour between 1 - 12 and Start Minute between 0 - 59");
-                    }
-                    break;
-                case 3:
-                    boolean validDuration = false;
-                    while(!validDuration) {
-                        System.out.println("Enter New Duration hour: ");
-                        float durHour = (keyboard.nextFloat());
-
-                        System.out.println("Enter New Duration minute: ");
-                        float durMinute = (keyboard.nextFloat());
-
-                        float iDuration = Main.verifyDuration(durHour, durMinute);
-
-                        if(iDuration != 0) {
-                            setDuration(iDuration);
-                            validDuration = true;
-                        }
-                        else
-                            System.out.println("INVALID Duration, Enter numbers greater than 0 for Duration Hour and Minute");
-                    }
-                    break;
-                case 4:
-                    boolean validDate = false;
-                    while(!validDate) {
-                        System.out.println("Enter New Date (YYYYMMDD): ");
-                        int iDate = keyboard.nextInt();
-
-                        if(Main.verifyDate(iDate))
-                        {
-                            setDate(iDate);
-                            validDate = true;
-                        }
-                        else
-                            System.out.println("INVALID Date, Enter valid date values");
-                    }
-                    break;
-            }
-        }
     }
     // todo : create getters and setters
 
