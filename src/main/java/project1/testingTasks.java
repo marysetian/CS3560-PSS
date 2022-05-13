@@ -44,6 +44,7 @@ public class testingTasks {
         //test1.delete();
         test1.edit();
         test1.view();
+        System.out.println(Schedule.hm.keySet());
 
     }
 
@@ -53,7 +54,7 @@ public class testingTasks {
 
        //  TransientTask create = new TransientTask();
         //create.create();
-        //Schedule.hm.put(create.getName(), create);
+        Schedule.hm.put(create.getName(), create);
         create.view();
         //create.edit();
 

@@ -92,7 +92,7 @@ public class AntiTask extends Task{
             int iDate = keyboard.nextInt();
 
             //verify if anti task is within start and enddate
-            if(Main.verifyDate(iDate) && Main.verifyEndDate(recurStart, iDate) && Main.verifyEndDate(iDate, recurEnd))
+            if(Main.verifyDate(iDate) && Main.verifyEndDate(recurStart, iDate) && Main.verifyEndDate(iDate, recurEnd) && Main.checkOverlapDate(recurStart, recurEnd, iDate, getInfo.getFrequency()))
             {
                 setDate(iDate);
                 sb.append(iDate);
@@ -170,7 +170,118 @@ public class AntiTask extends Task{
     /**
      * displays a menu for a user to edit any task attribute
      * */
-    public void edit() {
+    public void edit()
+    {
+
+        Boolean canEdit = true; boolean break1 = false; int iDate = 0;
+        for(Map.Entry mapElement : Schedule.hm.entrySet())
+        {
+            String key = (String)mapElement.getKey();
+            if(Schedule.hm.get(key).getTaskType().equals("Transient"))
+            {
+                TransientTask check = (TransientTask) Schedule.hm.get(key);
+                if(getDate() == check.getDate() && Main.checkOverlapTime(getStartTime(),getDuration(), check.getStartTime(), check.getDuration()))
+                {
+                    System.out.println("Anti Task overlaps with a Transient Task, Cannot be edited.");
+                    canEdit = false;
+                    break1 = true;
+                }
+            }
+            else if(Schedule.hm.get(key).getTaskType().equals("Recurring"))
+            {
+                RecurringTask check1 = (RecurringTask) Schedule.hm.get(key);
+                String nn = getName();
+                String ss = nn.substring(5, nn.length() - 9);
+                if(Main.checkOverlapTime(getStartTime(),getDuration(), check1.getStartTime(), check1.getDuration()))
+                {
+                    //verify anti task date is within recurring
+                    if(Main.verifyEndDate(check1.getStartDate(), getDate()) && Main.verifyEndDate(getDate(), check1.getEndDate()))
+                    {
+                        if(Main.checkOverlapDate(check1.getStartDate(), check1.getEndDate(), getDate(), check1.getFrequency()) && !ss.equals(check1.getName()))
+                        {
+                            System.out.println("Anti Task overlaps with a Recurring Task, Cannot be edited.");
+                            canEdit = false;
+                            break1 = true;
+                        }
+                    }
+                }
+            }
+            if(break1)
+                break;
+
+        }
+
+        boolean validDate = false;
+        if(canEdit)
+        {
+            Scanner keyboard = new Scanner(System.in);
+            System.out.println("Current Task Attributes:");
+            view();
+            System.out.println("Select an attribute to edit or exit. ");
+            System.out.println("0. Exit \n1. Date ");
+            int input = keyboard.nextInt();
+
+            if(input == 0)
+                System.out.println("Exited Edit Menu");
+            else if(input == 1)
+            {
+                while(!validDate)
+                {
+                    System.out.println("Enter New Date (YYYYMMDD): ");
+                    iDate = keyboard.nextInt();
+                    if(Main.verifyDate(iDate))
+                        validDate = true;
+                }
+            }
+        }
+        else
+            System.out.println("Edit failed");
+
+        RecurringTask getInfo = new RecurringTask();
+        if(validDate)
+        {
+            for(Map.Entry mapElement : Schedule.hm.entrySet())
+            {
+                String key = (String)mapElement.getKey();
+                if(Schedule.hm.get(key).getTaskType().equals("Recurring"))
+                {
+                    RecurringTask check1 = (RecurringTask) Schedule.hm.get(key);
+                    String nn = getName();
+                    String ss = nn.substring(5, nn.length() - 9);
+                    if(Main.checkOverlapTime(getStartTime(),getDuration(), check1.getStartTime(), check1.getDuration()))
+                    {
+                        //verify anti task date is within recurring
+                        if(Main.verifyEndDate(check1.getStartDate(), getDate()) && Main.verifyEndDate(getDate(), check1.getEndDate()))
+                        {
+                            if(Main.checkOverlapDate(check1.getStartDate(), check1.getEndDate(), getDate(), check1.getFrequency()) && ss.equals(check1.getName()))
+                            {
+                                getInfo = check1;
+                                break1 = true;
+                            }
+                        }
+                    }
+                }
+                if(break1)
+                    break;
+            }
+            //create new Anti task
+            //remove old anti task from
+            //check if new date conflicts with other tasks
+            if(Main.checkOverlapDate(getInfo.getStartDate(), getInfo.getEndDate(), iDate, getInfo.getFrequency()))
+            {
+                Schedule.hm.remove(getName());
+                setDate(iDate);
+                StringBuilder sb = new StringBuilder();
+                sb.append("anti_");sb.append(getInfo.getName());sb.append("_");
+                sb.append(iDate);
+                setName(sb.toString());
+                Schedule.hm.put(getName(),this);
+            }
+            else
+                System.out.println("Task Not Edited, enter valid dates only");
+        }
+
+
 
     }
     // todo : create getters and setters

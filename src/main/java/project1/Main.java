@@ -93,13 +93,7 @@ public class Main {
 					//test1.create();
 					//test1.view();
 					createRecurringTask();
-					//test1.edit();
-					//test1.view();
-					// Recurring Task
-					// ask user to name the task
-					// verify name is not a duplicate
-					// create task with an empty constructor
-					// call create method for corresponding task
+					chooseUse();
 					break;
 
 				case 3:
@@ -357,5 +351,7 @@ public class Main {
 
 		return false;
 	}
+
+
 }
 
