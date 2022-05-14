@@ -1,6 +1,11 @@
 package project1;
 
 
+import org.json.simple.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class TransientTask extends Task {
@@ -189,7 +194,7 @@ public class TransientTask extends Task {
                                 continue;
                             }
                             else {
-                                keyboard.close();
+//                                keyboard.close();
                                 return;
                             }
                         }

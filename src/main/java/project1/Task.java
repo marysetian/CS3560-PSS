@@ -1,11 +1,18 @@
 package project1;
 
+import org.json.simple.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Map;
+
 public class Task {
 
     protected String name;
     protected String type;
     protected float startTime;
     protected float duration;
+    protected int date;
     private String taskType;
 
 
@@ -16,6 +23,7 @@ public class Task {
         this.startTime = startTime;
         this.duration = duration;
         this.taskType = taskType;
+
     }
 
     public Task() {}
@@ -46,6 +54,16 @@ public class Task {
         this.duration = duration;
     }
 
+//    private void setDate(int date)
+//    {
+//        this.date = date;
+//    }
+//
+//    public int getDate()
+//    {
+//        return date;
+//    }
+
     public String getName()
     {
         return name;
@@ -67,6 +85,7 @@ public class Task {
     }
 
     public void setTaskType(String taskType){this.taskType = taskType;};
+
     public String getTaskType() {return taskType;};
 
 }

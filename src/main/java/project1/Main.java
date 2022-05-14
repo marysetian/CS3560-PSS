@@ -1,5 +1,9 @@
 package project1;
+
+import org.json.simple.parser.ParseException;
+
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Scanner;
 import java.lang.Math; // Needed to use Math.round()
 import java.util.Calendar;
@@ -31,11 +35,13 @@ public class Main {
 					// view schedule
 					//
 					//
+
 					break;
 				case 2:
 					createTask();
 					// call menu for user to specify the type of task they want to create
 					// call create method for the certain task type
+
 					break;
 				case 3:
 					// delete a task
@@ -47,8 +53,9 @@ public class Main {
 					// read schedule from file
 					break;
 				case 6:
-					// write to schedule
-					writeMenu();
+					//write to file
+					createWriteSchedule();
+					break;
 				case 7:
 					// exit program
 					break;
@@ -59,40 +66,13 @@ public class Main {
 		}
 	}
 
-	public static void writeMenu(){
-		System.out.println("Please choose which type of schedule you would like to print:\n"
-				+ "1. daily schedule\n"
-				+ "2. weekly schedule\n"
-				+ "3. monthly schedule\n"
-				+ "4. exit program\n");
-
-		try (Scanner keyboard = new Scanner(System.in)) {
-			int choice = keyboard.nextInt();
-			switch (choice) {
-				case 1:
-					// daily schedule  -- Mary
-					break;
-				case 2:
-					// weekly schedule -- Linda
-					break;
-				case 3:
-					// monthly schedule  -- Alondra
-					break;
-				case 4:
-					// exit program
-					break;
-				default:
-					System.out.println("Invalid input, please try again\n");
-					writeMenu();
-			}
-		}
-	}
 
 	private static void createTask() {
-		System.out.println("Choose from the following task types to create:\n "
-				+ "1. Transient Task"
-				+ "2. Recurring Task"
-				+ "3. Anti Task");
+		System.out.println("Choose from the following task types to create:\n"
+				+ "1. Transient Task \n"
+				+ "2. Recurring Task \n"
+				+ "3. Anti Task \n"
+				+ "4. Back to chooseUse menu \n");
 		try (Scanner keyboard = new Scanner(System.in)) {
 			int choice = keyboard.nextInt();
 			switch (choice) {
@@ -103,28 +83,26 @@ public class Main {
 					// create task with an empty constructor
 					// call create method for corresponding task
 
+					/*
 					TransientTask Test1 = new TransientTask();
 					Test1.create();
 					Test1.view();
-
 					Test1.edit();
 					Test1.view();
+					 */
+					createTransientTask();
+					chooseUse();
 
 
 					break;
 
 				case 2:
-					RecurringTask test1 = new RecurringTask();
-					test1.create();
-					test1.view();
-
-					//test1.edit();
+					//RecurringTask test1 = new RecurringTask();
+					//test1.create();
 					//test1.view();
-					// Recurring Task
-					// ask user to name the task
-					// verify name is not a duplicate
-					// create task with an empty constructor
-					// call create method for corresponding task
+					createRecurringTask();
+					chooseUse();
+
 					break;
 
 				case 3:
@@ -133,14 +111,20 @@ public class Main {
 					// verify name is not a duplicate
 					// create task with an empty constructor
 					// call create method for corresponding task
+					createAntiTask();
+					chooseUse();
 
-					AntiTask antiTest = new AntiTask();
-					antiTest.create();
-					antiTest.view();
+					/*
+					AntiTask antiTest1 = new AntiTask();
+					antiTest1.create();
+					antiTest1.view();
+					antiTest1.edit();
+					antiTest1.view();
+					*/
 
-					antiTest.edit();
-					antiTest.view();
-
+					break;
+				case 4:
+					chooseUse();
 					break;
 				default:
 					System.out.println("Invalid input, please try again\n");
@@ -152,7 +136,8 @@ public class Main {
 
 	/**
 	 * verifies the date of task is valid
-	 * @param date		date in form YYYYMMDD given by user
+	 *
+	 * @param date date in form YYYYMMDD given by user
 	 * @return boolean    true if date >= current date
 	 */
 	public static boolean verifyDate(int date) {
@@ -163,15 +148,15 @@ public class Main {
 
 		// parse date into year, month, day
 		String tempDate = String.valueOf(date);
-		int year = Integer.valueOf(tempDate.substring(0,4));
-		int month = Integer.valueOf(tempDate.substring(4,6));;
-		int day = Integer.valueOf(tempDate.substring(6,8));;
+		int year = Integer.valueOf(tempDate.substring(0, 4));
+		int month = Integer.valueOf(tempDate.substring(4, 6));
+		;
+		int day = Integer.valueOf(tempDate.substring(6, 8));
+		;
 
-		if(year >= currentYear && month >= currentMonth)
-		{
-			if(month == currentMonth)
-			{
-				if(day >= currentDay)
+		if (year >= currentYear && month >= currentMonth) {
+			if (month == currentMonth) {
+				if (day >= currentDay)
 					return true;
 				else
 					return false;
@@ -179,7 +164,7 @@ public class Main {
 			return true;
 		}
 
-		if( year >= currentYear && month >= currentMonth && day >= currentDay)
+		if (year >= currentYear && month >= currentMonth && day >= currentDay)
 			return true;
 
 		return false;
@@ -231,7 +216,7 @@ public class Main {
 					minute = minute / 15;
 					minute = Math.round(minute);
 					minute = (float) (minute * .25);
-					if(hour == 24)
+					if (hour == 24)
 						return minute;
 					return hour + minute;
 			}
@@ -282,8 +267,7 @@ public class Main {
 		}
 	}
 
-	public static void viewTask()
-	{
+	public static void viewTask() {
 		Scanner keyboard = new Scanner(System.in);
 		System.out.println("Current Tasks");
 		System.out.println(Schedule.hm.keySet());
@@ -293,17 +277,18 @@ public class Main {
 		Schedule.hm.get(view).view();
 	}
 
-	public static void createTransientTask()
-	{
+	public static void createTransientTask() {
 		TransientTask tt = new TransientTask();
 		tt.create();
-		Schedule.hm.put(tt.getName(), tt);
-		System.out.println("Transient Task " + tt.getName() + " added to Schedule");
-		tt.view();
+		if (tt.getTaskType().equals("Transient")) {
+			Schedule.hm.put(tt.getName(), tt);
+			System.out.println("Transient Task " + tt.getName() + " added to Schedule");
+			tt.view();
+		} else
+			System.out.println("Task Creation Failed");
 	}
 
-	public static void createAntiTask()
-	{
+	public static void createAntiTask() {
 		AntiTask at = new AntiTask();
 		at.create();
 
@@ -313,8 +298,7 @@ public class Main {
 		at.view();
 	}
 
-	public static void createRecurringTask()
-	{
+	public static void createRecurringTask() {
 		RecurringTask rt = new RecurringTask();
 		rt.create();
 		Schedule.hm.put(rt.getName(), rt);
@@ -324,37 +308,35 @@ public class Main {
 	}
 
 	//if true it does overlap
-	public static boolean checkOverlapTime(float start1, float dur1, float start2, float dur2)
-	{
-		if(start1 == start2)
+	public static boolean checkOverlapTime(float start1, float dur1, float start2, float dur2) {
+		if (start1 == start2)
 			return true;
-		else if(start1 < start2 && start2 < start1 + dur1)
+		else if (start1 < start2 && start2 < start1 + dur1)
 			return true;
-		else if(start2 < start1 && start1 < start2 + dur2)
+		else if (start2 < start1 && start1 < start2 + dur2)
 			return true;
 		return false;
 	}
 
-	public static boolean checkOverlapDate(int startDate, int endDate, int date, int freq)
-	{
-		int[] days = {31,28,31,30,31,30,31,31,30,31,30,31};
+	public static boolean checkOverlapDate(int startDate, int endDate, int date, int freq) {
+		int[] days = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 		int newDate = startDate;
-		while(newDate <= endDate)
-		{
+		while (newDate <= endDate) {
 			String tempDate = String.valueOf(newDate);
-			int year = Integer.valueOf(tempDate.substring(0,4));
-			int month = Integer.valueOf(tempDate.substring(4,6));;
-			int day = Integer.valueOf(tempDate.substring(6,8));;
-			if(newDate == date)
+			int year = Integer.valueOf(tempDate.substring(0, 4));
+			int month = Integer.valueOf(tempDate.substring(4, 6));
+			;
+			int day = Integer.valueOf(tempDate.substring(6, 8));
+			;
+			if (newDate == date)
 				return true;
 
 			day = day + freq;
-			if(day > days[month - 1])
-			{
-				day = day - days[month -1];
-				if(month < 12)
+			if (day > days[month - 1]) {
+				day = day - days[month - 1];
+				if (month < 12)
 					month++;
-				else{
+				else {
 					month = 1;
 					year++;
 				}
@@ -362,10 +344,10 @@ public class Main {
 			}
 			StringBuilder sb = new StringBuilder();
 			sb.append(year);
-			if(month < 10)
+			if (month < 10)
 				sb.append("0");
 			sb.append(month);
-			if(day < 10)
+			if (day < 10)
 				sb.append("0");
 			sb.append(day);
 
@@ -376,5 +358,466 @@ public class Main {
 
 		return false;
 	}
+
+	public static void createWriteSchedule() {
+
+		System.out.println("Please choose which type of schedule you would like to print:\n"
+				+ "1. daily schedule\n"
+				+ "2. weekly schedule\n"
+				+ "3. monthly schedule\n"
+				+ "4. exit program\n");
+
+//		Scanner keyboard = new Scanner(System.in);
+
+		try (Scanner keyboard = new Scanner(System.in)) {
+			int opt = keyboard.nextInt();
+			switch (opt) {
+				case 1:
+					// daily schedule  -- Mary
+					break;
+				case 2:
+					// weekly schedule -- Linda
+
+//					String filename;
+					int givenDate = 0;
+
+//					System.out.println("Please enter a filename: ");
+//					filename = keyboard.nextLine();
+
+					System.out.println("Please enter a start date for the week: ");
+					givenDate = keyboard.nextInt();
+
+					Schedule.writeWeeklyToFile("TEST", givenDate);
+
+					break;
+				case 3:
+					// monthly schedule  -- Alondra
+					break;
+				case 4:
+					// exit program
+					return;
+				default:
+					System.out.println("Invalid input, please try again\n");
+					createWriteSchedule();
+			}
+		} catch (java.text.ParseException e) {
+			e.printStackTrace();
+		}
+	}
 }
+
+
+
+
+
+
+
+//import java.text.ParseException;
+//import java.util.GregorianCalendar;
+//import java.util.Scanner;
+//import java.lang.Math; // Needed to use Math.round()
+//import java.util.Calendar;
+//
+//public class Main {
+//
+//	public static final Scanner keyboard = new Scanner(System.in);
+//
+//	public static void main(String[] args) {
+//		welcomeMessage();
+//			chooseUse();
+//
+//	}
+//
+//	private static void welcomeMessage() {
+//		System.out.println("Welcome to PSS!\n");
+//	}
+//
+//	private static void chooseUse() {
+//
+//			System.out.println("Please choose from the following:\n"
+//					+ "1. view schedule\n"
+//					+ "2. create task\n"
+//					+ "3. delete task\n"
+//					+ "4. edit task\n"
+//					+ "5. read schedule from file\n"
+//					+ "6. write schedule to file\n"
+//					+ "7. exit program\n");
+//
+//		try (keyboard) {
+//			int choice = keyboard.nextInt();
+//			switch (choice) {
+//				case 1:
+//					// view schedule
+//					//
+//					//
+//					break;
+//				case 2:
+//					createTask();
+//					// call menu for user to specify the type of task they want to create
+//					// call create method for the certain task type
+//
+//					break;
+//				case 3:
+//					// delete a task
+//					break;
+//				case 4:
+//					// edit task
+//					break;
+//				case 5:
+//					// read schedule from file
+//					break;
+//				case 6:
+//					// write to schedule
+//					createWriteSchedule();
+//				case 7:
+//					// exit program
+//					break;
+//				default:
+//					System.out.println("Invalid input, please try again\n");
+//					chooseUse();
+//			}
+//		}
+//	}
+//
+//	public static void createWriteSchedule(){
+//
+//		System.out.println("Please choose which type of schedule you would like to print:\n"
+//				+ "1. daily schedule\n"
+//				+ "2. weekly schedule\n"
+//				+ "3. monthly schedule\n"
+//				+ "4. exit program\n");
+//
+////		Scanner keyboard = new Scanner(System.in);
+//
+//		try (keyboard) {
+//			int opt = keyboard.nextInt();
+//			switch (opt) {
+//				case 1:
+//					// daily schedule  -- Mary
+//					break;
+//				case 2:
+//					// weekly schedule -- Linda
+//
+////					String filename;
+//					int givenDate = 0;
+//
+////					System.out.println("Please enter a filename: ");
+////					filename = keyboard.nextLine();
+//
+//					System.out.println("Please enter a start date for the week: ");
+//					givenDate = keyboard.nextInt();
+//
+//					Schedule.writeWeeklyToFile("filename: TEST", givenDate);
+//
+//					break;
+//				case 3:
+//					// monthly schedule  -- Alondra
+//					break;
+//				case 4:
+//					// exit program
+//					break;
+//				default:
+//					System.out.println("Invalid input, please try again\n");
+//					createWriteSchedule();
+//			}
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//
+//	private static void createTask() {
+//		System.out.println("Choose from the following task types to create:\n "
+//				+ "1. Transient Task"
+//				+ "2. Recurring Task"
+//				+ "3. Anti Task");
+////		try (Scanner keyboard = new Scanner(System.in)) {
+//		try(keyboard){
+//			int choice = keyboard.nextInt();
+//			switch (choice) {
+//				case 1:
+//					// Transient Task
+//					// ask user to name the task
+//					// verify name is not a duplicate
+//					// create task with an empty constructor
+//					// call create method for corresponding task
+//
+//					TransientTask Test1 = new TransientTask();
+//					Test1.create();
+//					Test1.view();
+//
+//					Schedule.hm.put(Test1.getName(),Test1);
+//
+//					chooseUse();
+//
+//					break;
+//
+//				case 2:
+//					RecurringTask test1 = new RecurringTask();
+//					test1.create();
+////					test1.view();
+//
+//					Schedule.hm.put(test1.getName(),test1);
+//
+//					chooseUse();
+//
+//					//test1.edit();
+////					test1.view();
+//					// Recurring Task
+//					// ask user to name the task
+//					// verify name is not a duplicate
+//					// create task with an empty constructor
+//					// call create method for corresponding task
+//					break;
+//
+//				case 3:
+//					// anti task
+//					// ask user to name the task
+//					// verify name is not a duplicate
+//					// create task with an empty constructor
+//					// call create method for corresponding task
+//
+//					AntiTask antiTest = new AntiTask();
+//					antiTest.create();
+////					antiTest.view();
+//
+//					chooseUse();
+//
+////					antiTest.edit();
+////					antiTest.view();
+//
+//					break;
+//				default:
+//					System.out.println("Invalid input, please try again\n");
+//					createTask();
+//			}
+//		}
+//	}
+//
+//	/**
+//	 * verifies the date of task is valid
+//	 * @param date		date in form YYYYMMDD given by user
+//	 * @return boolean    true if date >= current date
+//	 */
+//	public static boolean verifyDate(int date) {
+//		Calendar today = new GregorianCalendar();
+//		int currentYear = today.get(Calendar.YEAR);
+//		int currentMonth = today.get(Calendar.MONTH) + 1;
+//		int currentDay = today.get(Calendar.DAY_OF_MONTH);
+//
+//		// parse date into year, month, day
+//		String tempDate = String.valueOf(date);
+//		int year = Integer.valueOf(tempDate.substring(0,4));
+//		int month = Integer.valueOf(tempDate.substring(4,6));;
+//		int day = Integer.valueOf(tempDate.substring(6,8));;
+//
+//		if(year >= currentYear && month >= currentMonth)
+//		{
+//			if(month == currentMonth)
+//			{
+//				if(day >= currentDay)
+//					return true;
+//				else
+//					return false;
+//			}
+//			return true;
+//		}
+//
+//		if( year >= currentYear && month >= currentMonth && day >= currentDay)
+//			return true;
+//
+//		return false;
+//	}
+//
+//
+//	/**
+//	 * verifies the given endDate is greater than or equal to startDate
+//	 *
+//	 * @param startDate an integer in form YYYYMMDD
+//	 * @param endDate   an integer in form YYYYMMDD
+//	 * @return true if endDate is greater than or equal to startDate
+//	 */
+//	public static boolean verifyEndDate(int startDate, int endDate) {
+//		return endDate > startDate;
+//	}
+//
+//	/**
+//	 * verfies user input a valid frequency for task
+//	 *
+//	 * @param frequency an int holding the user given input
+//	 * @return true if frequency is 1 or 7, false otherwise
+//	 */
+//	public static boolean verifyFrequency(int frequency) {
+//		return (frequency == 1 || frequency == 7);
+//	}
+//
+//	/**
+//	 * verifies the user input for start time is valid
+//	 *
+//	 * @param hour    user given hour the task starts at
+//	 * @param minute  user given minute task starts at
+//	 * @param dayTime a user given string, "am" indicating morning start time, "pm" indicating night start time
+//	 * @reutrn startTime    a float holding modified startTime form, 0 if user inputs are found invalid
+//	 */
+//	public static float verifyStartTime(float hour, float minute, String dayTime) {
+//
+//		// is hour between 0 and 24 inclusive, is minute between 0 and 59 inclusive
+//		if ((0 <= hour && hour <= 12) && (0 <= minute && minute <= 59)) {
+//			switch (dayTime) {
+//				case "am":
+//					minute = minute / 15;
+//					minute = Math.round(minute);
+//					minute = (float) (minute * .25);
+//					return hour + minute;
+//
+//				case "pm":
+//					hour += 12;
+//					minute = minute / 15;
+//					minute = Math.round(minute);
+//					minute = (float) (minute * .25);
+//					if(hour == 24)
+//						return minute;
+//					return hour + minute;
+//			}
+//		}
+//		return 0;
+//	}
+//
+//	public static float verifyDuration(float hour, float minute) {
+//		// are both hour and minute positive integers
+//		if (hour >= 0 && minute >= 0) {
+//			if (minute < 60) {
+//				minute = Math.round(minute / 15);
+//				minute = (float) ((minute * 0.25));
+//			} else {
+//				hour = (float) (hour + Math.floor(minute / 60));
+//				minute = (minute % 60);
+//				minute = Math.round(minute / 15);
+//				minute = (float) ((minute * 0.25));
+//			}
+//			return hour + minute;
+//
+//		} else {
+//			return 0;
+//		}
+//	}
+//
+//	public static boolean verifyCategory(int taskSelectionNum, String userInput) {
+//		String[] categories = {"Visit", "Shopping", "Appointment", "Class", "Study", "Sleep", "Exercise", "Work", "Meal"};
+//		switch (taskSelectionNum) {
+//			case 1:
+//				return userInput.equals("Cancellation");
+//			case 2:
+//				for (int i = 0; i < 3; i++) {
+//					if (categories[i].equals(userInput)) {
+//						return true;
+//					}
+//				}
+//				return false;
+//			case 3:
+//				for (int i = 3; i < categories.length; i++) {
+//					if (categories[i].equals(userInput)) {
+//						return true;
+//					}
+//				}
+//				return false;
+//			default:
+//				return false;
+//		}
+//	}
+//
+//	public static void viewTask()
+//	{
+//		Scanner keyboard = new Scanner(System.in);
+//		System.out.println("Current Tasks");
+//		System.out.println(Schedule.hm.keySet());
+//		System.out.println("Select a Task to View: ");
+//		String view = keyboard.nextLine().trim();
+//
+//		Schedule.hm.get(view).view();
+//	}
+//
+//	public static void createTransientTask()
+//	{
+//		TransientTask tt = new TransientTask();
+//		tt.create();
+//		Schedule.hm.put(tt.getName(), tt);
+//		System.out.println("Transient Task " + tt.getName() + " added to Schedule");
+//		tt.view();
+//	}
+//
+//	public static void createAntiTask()
+//	{
+//		AntiTask at = new AntiTask();
+//		at.create();
+//
+//		//verify no overlaps here
+//		Schedule.hm.put(at.getName(), at);
+//		System.out.println("Anti Task " + at.getName() + " added to Schedule");
+//		at.view();
+//	}
+//
+//	public static void createRecurringTask()
+//	{
+//		RecurringTask rt = new RecurringTask();
+//		rt.create();
+//		Schedule.hm.put(rt.getName(), rt);
+//		System.out.println("Recurring Task " + rt.getName() + " added to Schedule");
+//		rt.view();
+//
+//	}
+//
+//	//if true it does overlap
+//	public static boolean checkOverlapTime(float start1, float dur1, float start2, float dur2)
+//	{
+//		if(start1 == start2)
+//			return true;
+//		else if(start1 < start2 && start2 < start1 + dur1)
+//			return true;
+//		else if(start2 < start1 && start1 < start2 + dur2)
+//			return true;
+//		return false;
+//	}
+//
+//	public static boolean checkOverlapDate(int startDate, int endDate, int date, int freq)
+//	{
+//		int[] days = {31,28,31,30,31,30,31,31,30,31,30,31};
+//		int newDate = startDate;
+//		while(newDate <= endDate)
+//		{
+//			String tempDate = String.valueOf(newDate);
+//			int year = Integer.valueOf(tempDate.substring(0,4));
+//			int month = Integer.valueOf(tempDate.substring(4,6));;
+//			int day = Integer.valueOf(tempDate.substring(6,8));;
+//			if(newDate == date)
+//				return true;
+//
+//			day = day + freq;
+//			if(day > days[month - 1])
+//			{
+//				day = day - days[month -1];
+//				if(month < 12)
+//					month++;
+//				else{
+//					month = 1;
+//					year++;
+//				}
+//
+//			}
+//			StringBuilder sb = new StringBuilder();
+//			sb.append(year);
+//			if(month < 10)
+//				sb.append("0");
+//			sb.append(month);
+//			if(day < 10)
+//				sb.append("0");
+//			sb.append(day);
+//
+//			newDate = Integer.valueOf(sb.toString());
+//			//System.out.println(newDate);
+//
+//		}
+//
+//		return false;
+//	}
+//}
 

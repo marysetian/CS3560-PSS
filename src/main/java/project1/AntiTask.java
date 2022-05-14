@@ -238,7 +238,7 @@ public class AntiTask extends Task{
                                 continue;
                             }
                             else {
-                                keyboard.close();
+//                                keyboard.close();
                                 return;
                             }
                         }
