@@ -103,7 +103,9 @@ public class AntiTask extends Task{
                 System.out.println("INVALID Date, Enter valid date values between Recurring Start and End Date");
         }
 
-        setTaskType(classType);
+        if(validDate)
+            setTaskType(classType);
+
 
 
     }

@@ -1,4 +1,5 @@
 package project1;
+import java.beans.Transient;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Scanner;
@@ -261,7 +262,10 @@ public class Main {
 		System.out.println("Select a Task to View: ");
 		String view = keyboard.nextLine().trim();
 
-		Schedule.hm.get(view).view();
+		if(Schedule.hm.containsKey(view))
+			Schedule.hm.get(view).view();
+		else
+			System.out.println("Task Entered Not In Schedule");
 	}
 
 	public static void createTransientTask()
@@ -283,9 +287,13 @@ public class Main {
 		at.create();
 
 		//verify no overlaps here
-		Schedule.hm.put(at.getName(), at);
-		System.out.println("Anti Task " + at.getName() + " added to Schedule");
-		at.view();
+		if(at.getTaskType().equals("Anti")) {
+			Schedule.hm.put(at.getName(), at);
+			System.out.println("Anti Task " + at.getName() + " added to Schedule");
+			at.view();
+		}
+		else
+			System.out.println("Task Creation Failed");
 	}
 
 	public static void createRecurringTask()
@@ -297,6 +305,72 @@ public class Main {
 		rt.view();
 
 	}
+
+	//edit tasks
+	public static void editTransientTask()
+	{
+		Scanner kb = new Scanner(System.in);
+		System.out.println("Enter Transient Task to Edit: ");
+		String key = kb.nextLine();
+
+		if(Schedule.hm.get(key).getTaskType().equals("Transient") && Schedule.hm.containsKey(key))
+		{
+			TransientTask edit = (TransientTask) Schedule.hm.get(key);
+			edit.edit();
+			edit.view();
+		}
+		else
+			System.out.println("Transient Task entered not in Schedule");
+
+	}
+
+	public static void editAntiTask()
+	{
+		Scanner kb = new Scanner(System.in);
+		System.out.println("Enter Anti Task to Edit: ");
+		String key = kb.nextLine();
+
+		if(Schedule.hm.get(key).getTaskType().equals("Anti") && Schedule.hm.containsKey(key))
+		{
+			AntiTask edit = (AntiTask) Schedule.hm.get(key);
+			edit.edit();
+			edit.view();
+		}
+		else
+			System.out.println("Anti Task entered not in Schedule");
+	}
+
+	//delete tasks
+	public static void deleteTransientTask()
+	{
+		Scanner kb = new Scanner(System.in);
+		System.out.println("Enter Transient Task to Delete: ");
+		String key = kb.nextLine();
+
+		if(Schedule.hm.get(key).getTaskType().equals("Transient") && Schedule.hm.containsKey(key))
+		{
+			TransientTask del = (TransientTask) Schedule.hm.get(key);
+			del.delete();
+		}
+		else
+			System.out.println("Transient Task entered not in Schedule");
+	}
+
+	public static void deleteAntiTask()
+	{
+		Scanner kb = new Scanner(System.in);
+		System.out.println("Enter Anti Task to Edit: ");
+		String key = kb.nextLine();
+
+		if(Schedule.hm.get(key).getTaskType().equals("Anti") && Schedule.hm.containsKey(key))
+		{
+			AntiTask del = (AntiTask) Schedule.hm.get(key);
+			del.delete();
+		}
+		else
+			System.out.println("Anti Task entered not in Schedule");
+	}
+
 
 	//if true it does overlap
 	public static boolean checkOverlapTime(float start1, float dur1, float start2, float dur2)

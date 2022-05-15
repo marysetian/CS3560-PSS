@@ -199,6 +199,7 @@ public class TransientTask extends Task {
     public void delete()
     {
         Schedule.hm.remove(getName());
+        System.out.println("Transient-Task Deleted");
     }
 
     /**
@@ -239,7 +240,10 @@ public class TransientTask extends Task {
                             }
                         }
                         validName = true;
+                        Schedule.hm.remove(getName());
                         setName(inputName);
+                        Schedule.hm.put(getName(),this);
+
                     }
                     break;
                 case 2:

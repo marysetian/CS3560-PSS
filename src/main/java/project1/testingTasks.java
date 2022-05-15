@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class testingTasks {
     public static void main(String[] args) {
 
-        // TODO: 5/11/2022 fix edit an anti task 
 
         //System.out.println(Main.checkOverlapDate(20220101,20230115,20230115,1));
         //System.out.println(Main.verifyDate(20220701));
@@ -17,6 +16,10 @@ public class testingTasks {
         createTransientTask();
         createAntiTask();
 
+        Main.editTransientTask();
+        Main.editAntiTask();
+
+        System.out.println(Schedule.hm.keySet());
 
 
 
@@ -40,9 +43,10 @@ public class testingTasks {
         //AntiTask test1 = new AntiTask();
         //test1.create();
         test1.view();
-        Schedule.hm.put(test1.getName(), test1);
+        if(test1.getTaskType().equals("Anti"))
+            Schedule.hm.put(test1.getName(), test1);
         //test1.delete();
-        test1.edit();
+        //test1.edit();
         test1.view();
         System.out.println(Schedule.hm.keySet());
 
@@ -55,8 +59,11 @@ public class testingTasks {
        //  TransientTask create = new TransientTask();
         //create.create();
         Schedule.hm.put(create.getName(), create);
+
         create.view();
+        System.out.println(Schedule.hm.keySet());
         //create.edit();
+
 
     }
 
