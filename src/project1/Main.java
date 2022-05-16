@@ -54,4 +54,16 @@ public class Main {
 		RecurringTask testTask =(RecurringTask)Schedule.hm.get("test");
 		testTask.view();
 	}
+		public static float calcEndTime(float inStartTime, float inDuration) {
+		int integer = (int)(inStartTime+inDuration);
+		float decimal = (inStartTime + inDuration) - integer; 
+		if (((inStartTime+inDuration)-integer)>=.60) {
+			integer++;
+			decimal-=.60;
+		}
+		if(integer >23) {
+			integer-=24;
+		}
+		return integer+decimal;
+	}
 }
