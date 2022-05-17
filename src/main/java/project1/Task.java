@@ -1,22 +1,15 @@
 package project1;
 
-import org.json.simple.JSONObject;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Map;
-
 public class Task {
 
     protected String name;
     protected String type;
     protected float startTime;
     protected float duration;
-    protected int date;
     private String taskType;
 
 
-    //    // TODO: does Task need a constructor ?
+    // TODO: does Task need a constructor ?
     public Task(String name, String type, float startTime, float duration, String taskType){
         this.name = name;
         this.type = type;
@@ -53,16 +46,6 @@ public class Task {
     {
         this.duration = duration;
     }
-
-//    private void setDate(int date)
-//    {
-//        this.date = date;
-//    }
-//
-//    public int getDate()
-//    {
-//        return date;
-//    }
 
     public String getName()
     {

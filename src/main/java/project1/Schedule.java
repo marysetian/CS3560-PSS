@@ -1,10 +1,9 @@
 package project1;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -229,4 +228,80 @@ public class Schedule {
         }
         System.out.println("JSON file created: "+ jsonObject);
     }
+
+
+    public static void readSchedule() throws IOException {
+        Scanner kb = new Scanner(System.in);
+        System.out.println("Enter filename to read schedule from: ");
+        String filename = "C:\\Users\\thaol\\Desktop\\CS3560 OOP\\CS3560_PSS\\src\\" + kb.nextLine() + ".json";
+
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader(filename))
+        {
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+
+            JSONArray taskList = (JSONArray) obj;
+            System.out.println(taskList);
+
+            //Iterate over employee array
+            taskList.forEach( task -> parseTaskObject( (JSONObject) task ) );
+
+        } catch (FileNotFoundException | org.json.simple.parser.ParseException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private static void parseTaskObject(JSONObject task)
+    {
+        //Get task object within list
+        String type = (String)task.get("Type");
+        System.out.println(type);
+
+
+
+        //Transient
+//        if (type.equals("Shopping") || type.equals("Appointment") || type.equals("Visit") ){
+//            String name = (String)task.get("Name");
+//            String date = (String)task.get("Date");
+//            String startTime = (String)task.get("StartTime");
+//            String duration = (String)task.get("Duration");
+//
+//
+//
+//        }
+        //Recurring
+        if (type.equals("Class") || type.equals("Study") || type.equals("Sleep") ||
+                type.equals("Exercise") || type.equals("Work") || type.equals("Meal")){
+
+            Map<String, Task> newHashMap = new TreeMap<>();
+
+            String name = (String)task.get("Name");
+            long startDate = (long)task.get("StartDate");
+            long endDate = (long)task.get("EndDate");
+            long startTime = (long)task.get("StartTime");
+            Double duration = (Double)task.get("Duration");
+            long frequency = (long)task.get("Frequency");
+
+            RecurringTask recurrTask = new RecurringTask();
+
+            recurrTask.createFromFile(name, type, startTime, duration, startDate, endDate, frequency);
+
+            hm.put(recurrTask.getName(), recurrTask);
+            System.out.println("Recurring Task " + recurrTask.getName() + " added to Schedule");
+            recurrTask.view();
+
+
+
+        }
+
+        else  // anti task
+        {
+
+        }
+    }
+
 }

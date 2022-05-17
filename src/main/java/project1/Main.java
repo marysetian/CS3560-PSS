@@ -2,6 +2,7 @@ package project1;
 
 import org.json.simple.parser.ParseException;
 
+import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Scanner;
@@ -51,6 +52,9 @@ public class Main {
 					break;
 				case 5:
 					// read schedule from file
+
+					Schedule.readSchedule();
+
 					break;
 				case 6:
 					//write to file
@@ -63,6 +67,8 @@ public class Main {
 					System.out.println("Invalid input, please try again\n");
 					chooseUse();
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
