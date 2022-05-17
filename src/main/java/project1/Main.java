@@ -1,5 +1,6 @@
 package project1;
 import java.beans.Transient;
+import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Scanner;
@@ -10,53 +11,62 @@ public class Main {
 
 	public static void main(String[] args) {
 		welcomeMessage();
-		chooseUse();
+        chooseUse();
 	}
 
 	private static void welcomeMessage() {
 		System.out.println("Welcome to PSS!\n");
 	}
 
-	private static void chooseUse() {
-		System.out.println("Please choose from the following:\n"
-				+ "1. view schedule\n"
-				+ "2. create task\n"
-				+ "3. delete task\n"
-				+ "4. edit task\n"
-				+ "5. read schedule from file\n"
-				+ "6. exit program\n");
-		try (Scanner keyboard = new Scanner(System.in)) {
-			int choice = keyboard.nextInt();
-			switch (choice) {
-				case 1:
-					// view schedule
-					//
-					//
+    private static void chooseUse() {
+        System.out.println("Please choose from the following:\n"
+                + "1. view schedule\n"
+                + "2. create task\n"
+                + "3. delete task\n"
+                + "4. edit task\n"
+                + "5. read schedule from file\n"
+                + "6. write schedule to file\n"
+                + "7. exit program\n");
+        try (Scanner keyboard = new Scanner(System.in)) {
+            int choice = keyboard.nextInt();
+            switch (choice) {
+                case 1:
+                    // view schedule
+                    //
+                    //
 
-					break;
-				case 2:
-					createTask();
-					// call menu for user to specify the type of task they want to create
-					// call create method for the certain task type
-					break;
-				case 3:
-					// delete a task
-					break;
-				case 4:
-					// edit task
-					break;
-				case 5:
-					// read schedule from file
-					break;
-				case 6:
-					// exit program
-					break;
-				default:
-					System.out.println("Invalid input, please try again\n");
-					chooseUse();
-			}
-		}
-	}
+                    break;
+                case 2:
+                    createTask();
+                    // call menu for user to specify the type of task they want to create
+                    // call create method for the certain task type
+
+                    break;
+                case 3:
+                    // delete a task
+                    break;
+                case 4:
+                    // edit task
+                    break;
+                case 5:
+                    // read schedule from file
+
+                    //Schedule.readSchedule();
+
+                    break;
+                case 6:
+                    //write to file
+                   // createWriteSchedule();
+                    break;
+                case 7:
+                    // exit program
+                    break;
+                default:
+                    System.out.println("Invalid input, please try again\n");
+                    chooseUse();
+            }
+        }
+    }
 
 
 
@@ -85,6 +95,7 @@ public class Main {
 
 					 */
 					createTransientTask();
+                    chooseUse();
 
 
 					break;
@@ -104,6 +115,7 @@ public class Main {
 					// create task with an empty constructor
 					// call create method for corresponding task
 					createAntiTask();
+                    chooseUse();
 					/*
 					AntiTask antiTest1 = new AntiTask();
 					antiTest1.create();

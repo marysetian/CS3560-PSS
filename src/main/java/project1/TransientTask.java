@@ -185,7 +185,6 @@ public class TransientTask extends Task {
 
     }
 
-
     /**
      * print all attributes of TransientTask
      * */
@@ -235,7 +234,7 @@ public class TransientTask extends Task {
                                 continue;
                             }
                             else {
-                                keyboard.close();
+                                //keyboard.close();
                                 return;
                             }
                         }

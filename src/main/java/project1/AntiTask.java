@@ -70,9 +70,6 @@ public class AntiTask extends Task{
 
             }
 
-
-
-
         //anti task is always Cancellation
         setType(validType);
 
@@ -282,8 +279,6 @@ public class AntiTask extends Task{
             else
                 System.out.println("Task Not Edited, enter valid dates only");
         }
-
-
 
     }
     // todo : create getters and setters

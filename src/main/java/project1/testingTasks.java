@@ -8,9 +8,15 @@ public class testingTasks {
     public static void main(String[] args) {
 
 
+        while (true) {
+            Main.createRecurringTask();
+            Main.createAntiTask();
+            Main.createTransientTask();
+        }
+
         //System.out.println(Main.checkOverlapDate(20220101,20230115,20230115,1));
         //System.out.println(Main.verifyDate(20220701));
-
+/*
         createRecurringTask();
 
         createTransientTask();
@@ -21,8 +27,7 @@ public class testingTasks {
 
         System.out.println(Schedule.hm.keySet());
 
-
-
+*/
 
     }
 
