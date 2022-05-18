@@ -261,23 +261,80 @@ public class Schedule {
         String type = (String)task.get("Type");
         System.out.println(type);
 
+//Transient
+        if (type.equals("Shopping") || type.equals("Appointment") || type.equals("Visit") ){
+            String name = (String)task.get("Name");
 
+            long date = (long)task.get("Date");
+            long startTime = (long)task.get("StartTime");
+            double duration = (double)task.get("Duration");
 
-        //Transient
-//        if (type.equals("Shopping") || type.equals("Appointment") || type.equals("Visit") ){
-//            String name = (String)task.get("Name");
-//            String date = (String)task.get("Date");
-//            String startTime = (String)task.get("StartTime");
-//            String duration = (String)task.get("Duration");
-//
-//
-//
-//        }
+            // validate name of task
+            boolean validName = false;
+            if (!Schedule.hm.containsKey(name)) {
+                validName = true;
+            }
+
+            //validate taskType
+            boolean validTaskType = false;
+            validTaskType = true;
+
+            // validate task startTime
+            boolean validStartTime = false;
+            float startHour ;
+            float startMin = 0;
+            String dayTime;
+            if (startTime <= 12){
+                startHour = (float) Math.floor(startTime);
+                dayTime = "am";
+            }
+            else {
+                startHour = (float) Math.floor(startTime - 12);
+                dayTime = "pm";
+            }
+
+            float formattedStartTime = Main.verifyStartTime(startHour, startMin, dayTime);
+            if (formattedStartTime != 0)
+                validStartTime = true;
+
+            // validate duration
+            boolean validDuration = false;
+            float durationHour = (float) Math.floor(duration);
+            float durationMin = (float) (duration - (int) Math.floor(duration));
+            if(durationMin == .25){
+                durationMin = 15;
+            }
+            else if(durationMin == .5){
+                durationMin = 30;
+            }
+            else if(durationMin == .75){
+                durationMin = 45;
+            }
+            else{
+                durationMin =0;
+            }
+            float formattedDuration = Main.verifyDuration(durationHour, durationMin);
+            if(formattedDuration != 0){
+                validDuration = true;
+            }
+
+            // validate date
+            boolean validDate = false;
+            if(Main.verifyDate((int) date))
+            {
+                validDate = true;
+            }
+
+            if(validName && validDate && validDuration && validTaskType && validStartTime){
+                TransientTask tempTrans = new TransientTask(name, type, formattedStartTime, formattedDuration, (int) date, "Transient");
+                Schedule.hm.put(tempTrans.getName(), tempTrans);
+                tempTrans.view();
+            }
+        }
+
         //Recurring
-        if (type.equals("Class") || type.equals("Study") || type.equals("Sleep") ||
+        else if (type.equals("Class") || type.equals("Study") || type.equals("Sleep") ||
                 type.equals("Exercise") || type.equals("Work") || type.equals("Meal")){
-
-            Map<String, Task> newHashMap = new TreeMap<>();
 
             String name = (String)task.get("Name");
             long startDate = (long)task.get("StartDate");
@@ -294,14 +351,6 @@ public class Schedule {
             System.out.println("Recurring Task " + recurrTask.getName() + " added to Schedule");
             recurrTask.view();
 
-
-
-        }
-
-        else  // anti task
-        {
-
         }
     }
-
 }
