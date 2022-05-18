@@ -1,8 +1,7 @@
 package project1;
 
-import org.json.simple.parser.ParseException;
-
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Scanner;
@@ -380,20 +379,28 @@ public class Main {
 			switch (opt) {
 				case 1:
 					// daily schedule  -- Mary
+
+					int givenDateDaily = 0;
+
+					System.out.println("Please enter a start date for the week: ");
+					givenDateDaily = keyboard.nextInt();
+
+					Schedule.writeDaily("TEST.json",givenDateDaily);
+
 					break;
 				case 2:
 					// weekly schedule -- Linda
 
 //					String filename;
-					int givenDate = 0;
+					int givenDateWeekly = 0;
 
 //					System.out.println("Please enter a filename: ");
 //					filename = keyboard.nextLine();
 
 					System.out.println("Please enter a start date for the week: ");
-					givenDate = keyboard.nextInt();
+					givenDateWeekly = keyboard.nextInt();
 
-					Schedule.writeWeeklyToFile("TEST", givenDate);
+					Schedule.writeWeeklyToFile("TEST.json", givenDateWeekly);
 
 					break;
 				case 3:
@@ -406,7 +413,7 @@ public class Main {
 					System.out.println("Invalid input, please try again\n");
 					createWriteSchedule();
 			}
-		} catch (java.text.ParseException e) {
+		} catch (ParseException | IOException e) {
 			e.printStackTrace();
 		}
 	}

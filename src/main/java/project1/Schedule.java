@@ -27,6 +27,60 @@ public class Schedule {
      * verify file category is valid when reading from a file
      * */
 
+    //hashmap that stores the tasks by the given date and sorts tasks by time
+    public static TreeMap<Double, Task> tm = new TreeMap<>();
+
+    public static void writeDaily(String fileName, int givenDate) throws IOException, java.text.ParseException {
+
+        //iterate through hashmap that holds all the tasks
+        for (Map.Entry mapElement : Schedule.hm.entrySet()) {
+            String key = (String) mapElement.getKey();
+
+            //if task type = transient
+            if (Schedule.hm.get(key).getTaskType().equals("Transient")) {
+                TransientTask tempTransient = (TransientTask) Schedule.hm.get(key);
+
+                //if the transient task's date == givenDate, put it in the tree map
+                if (tempTransient.getDate() == givenDate) {
+
+                    //key: start time, value: transient task object
+                    tm.put((double) tempTransient.getStartTime(), tempTransient);
+                }
+            }
+
+            //if task type = recurring
+            if (Schedule.hm.get(key).getTaskType().equals("Recurring")) {
+                RecurringTask tempRecurring = (RecurringTask) Schedule.hm.get(key);
+                int startDate = tempRecurring.getStartDate();
+                int endDate = tempRecurring.getEndDate();
+                int frequency = tempRecurring.getFrequency();
+
+                //check to see if the recurring task occurs on the given date
+                boolean isIn = verifyRecurringDate(givenDate, startDate, endDate, frequency);
+
+                //if given date is included between start date and end date
+                if (isIn) {
+                    for (Map.Entry mapElement2 : Schedule.hm.entrySet()) {
+                        String key2 = (String) mapElement2.getKey();
+
+                        String recurAntiName = "anti_" + tempRecurring.getName() + "_" + givenDate;
+
+                        //if anti task does not match recurring task, put in tree map
+                        if (!hm.containsKey(recurAntiName)) {
+                            tm.put((double) tempRecurring.getStartTime(), tempRecurring);
+
+                        } else {
+                            System.out.println("Cannot add " + tempRecurring.getName() + " on " + givenDate + " because it has a matching anti task: " + Schedule.hm.get(key2).getName());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        writeToJSON(fileName, tm);
+    }
+
+
     //write schedule to json file for a week
     public static void writeWeeklyToFile( String filename, int givenDate) throws ParseException {
 
@@ -352,5 +406,31 @@ public class Schedule {
             recurrTask.view();
 
         }
+    }
+
+    public static boolean verifyRecurringDate(int givenDate, int startDate, int endDate, int frequency) throws ParseException, java.text.ParseException {
+        ArrayList<Integer> recurringDays = new ArrayList<Integer>();
+        int recurringDate = startDate;
+        recurringDays.add(Integer.valueOf(recurringDate));
+        while (recurringDate < endDate) {
+            if (frequency == 1) {
+                String tempDate = String.valueOf(recurringDate);
+                tempDate = incrementDayCalendar(tempDate, 1);
+                recurringDate = Integer.parseInt(tempDate);
+                recurringDays.add(Integer.valueOf(recurringDate));
+            } else if (frequency == 7) {
+                String tempDate = String.valueOf(recurringDate);
+                tempDate = incrementDayCalendar(tempDate, 7);
+                recurringDate = Integer.parseInt(tempDate);
+                recurringDays.add(Integer.valueOf(recurringDate));
+            }
+        }
+
+        for (int i = 0; i < recurringDays.size(); i++) {
+            if (givenDate == recurringDays.get(i)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
