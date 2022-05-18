@@ -14,7 +14,7 @@ public class RecurringTask extends Task {
     private int startDate;  //YYYYMMDD
     private int endDate;    //YYYYMMDD
     private int frequency;  // 1 - daily , 7 weekly
-    private String taskType = "recurring";
+    private String classType = "recurring";
     private boolean available = false;  // true = anti-task exists for this task
     private String[] validTypes = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal"};
 
@@ -220,6 +220,7 @@ public class RecurringTask extends Task {
 		        break;
 	        }
 	        Schedule.hm.put(name, this);
+	        createSuccess();
 	        return;
         }
     }
@@ -450,15 +451,30 @@ public class RecurringTask extends Task {
     	//loop for finding tasks which conflict
     	for (Map.Entry mapElement : Schedule.hm.entrySet()) {
     		Task checkTask = (Task)mapElement.getValue();
+    		//setting variables for the checkTask start and end date values
+    		int checkTaskStartDate = 0;
+    		int checkTaskEndDate = 0;
+    		if (checkTask instanceof RecurringTask) {
+    			checkTaskStartDate = ((RecurringTask)checkTask).getStartDate();
+    			checkTaskEndDate = ((RecurringTask)checkTask).getStartDate();
+    		}
     		float endTime = Main.calcEndTime(inStartTime, inDuration);
     		if (checkTask instanceof AntiTask) {
     			continue;
     		}
     		float checkTaskEndTime = Main.calcEndTime(checkTask.getStartTime(), checkTask.getDuration());
     		
-    		//check for task conflicts
-    		if (isTimeBetween(checkTask,startTime,endTime)
-    	    		&&isDateBetween(checkTask, startDate,endDate)) {
+    		/*
+    		 * check for task conflicts
+    		 * if this RecurringTask is within the same time as the checkTask,
+    		 * or if the checkTask is within the same time as this RecurringTask,
+    		 * and if this RecurringTask is within the date range as the checkTask,
+    		 * or if the checkTask is within the date range as this RecurringTask
+    		 */
+    		if (isTimeBetween(checkTask,inStartTime,endTime)
+    				||(isTimeBetween(this, checkTask.getStartTime(), checkTaskEndTime))
+    	    		&&(isDateBetween(checkTask, inStartDate,inEndDate)
+    				||(isDateBetween(this, checkTaskStartDate, checkTaskEndDate)))) {
     			//case 1: this recurring task occurs 7 days a week
     			if (frequency == 1) {
     				//checkTask is a RecurringTask, either 1 or 7 days a week
@@ -474,55 +490,35 @@ public class RecurringTask extends Task {
     			}
     			//case 2: this recurring task occurs 1 day a week
         		if (frequency == 7) {
-        			Calendar thisTaskDates = new GregorianCalendar();
         			// parse date into year, month, day
-        			String tempDate = String.valueOf(startDate);
+        			String tempDate = String.valueOf(inStartDate);
         			int year = Integer.valueOf(tempDate.substring(0,4));
         			int month = Integer.valueOf(tempDate.substring(4,6));;
         			int day = Integer.valueOf(tempDate.substring(6,8));;
+        			Calendar thisTasksDates = new GregorianCalendar(year,month,day);
+        			//checkTask is a RecurringTask, either 1 or 7 days a week
         			if(checkTask instanceof RecurringTask) {
-        				
+        				//check for if checkTask occurs 7 days a week
+        				//do two loops: one for this recurringTask, and one for
+        				//the checkTask, then repeat reversing the roles
+        				//do-while loop, instaciate the calendar inside each loop
+        				if (((RecurringTask) checkTask).getFrequency() == 1) {
+        					return checkTask;
+        				}
+        				//check for if checkTask occurs 1 day a week
         			}
+        			/*TODO; case when checkTask is recurring and is 7 days a week
+        			and this recurring task is between that 
+        			*/
         			if(checkTask instanceof TransientTask) {
-        				
+        			
         			}
         		}
     		}
     	}
     	return null;
     }
-    
-    /**
-     * Method for finding task date conflicts
-     * @return  task that conflicts with recurringTask
-     */
-    /*
-    public Task checkDateConflicts() {
 
-    	for (Map.Entry mapElement : Schedule.hm.entrySet()) {
-    		Task checkTask = (Task)mapElement.getValue();
-    		float checkTaskEndTime = checkTask.getStartTime() + checkTask.getDuration();
-    		//check for recurring task type conflicts
-            if (checkTask instanceof RecurringTask) {
-            	if (checkTask.getStartTime() >= startTime
-            			&& checkTask.getStartTime() <= (startTime+duration)
-            			|| checkTaskEndTime >= startTime
-            			&& checkTaskEndTime <= (startTime+duration)) { 
-            		return checkTask;
-            	}
-            }
-            if (checkTask instanceof TransientTask) {
-            	if (		
-            			checkTask.getStartTime() >= startTime
-            			&& checkTask.getStartTime() <= (startTime+duration)
-            			|| checkTaskEndTime >= startTime
-            			&& checkTaskEndTime <= (startTime+duration)) { 
-            		return checkTask;
-            	}
-            }
-    	}
-    	return null;
-    }*/
     /**
      * Method for determining if time of task is at same time as this recurring task
      * @param inTask		task to be checked for time between
@@ -660,10 +656,6 @@ public class RecurringTask extends Task {
     public String getType() {
         return type;
     }
-    
-    public String getTaskType() {
-    	return taskType;
-    }
 
     public float getStartTime() {
         return startTime;
@@ -671,5 +663,9 @@ public class RecurringTask extends Task {
 
     public String[] getValidTypes() {
         return validTypes;
+    }
+    
+    public String getClassType() {
+    	return classType;
     }
 }
