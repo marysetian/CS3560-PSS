@@ -509,7 +509,7 @@ public class Schedule {
 
 
             if (validName && validStartDate && validEndDate && validDuration && validTaskType && validStartTime) {
-                RecurringTask recurrTask = new RecurringTask(name, type, formattedStartTime, formattedDuration, (int)startDate, (int)endDate, (int)frequency);
+                RecurringTask recurrTask = new RecurringTask(name, type, formattedStartTime, formattedDuration, (int)startDate, (int)endDate, (int)frequency, "Recurring");
                 hm.put(recurrTask.getName(), recurrTask);
                 recurrTask.view();
             }

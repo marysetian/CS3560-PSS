@@ -31,7 +31,8 @@ public class Main {
 				+ "4. edit task\n"
 				+ "5. read schedule from file\n"
 				+ "6. write schedule to file\n"
-				+ "7. exit program\n");
+				+ "7. view a task\n"
+				+ "8. exit program\n");
 		try (Scanner keyboard = new Scanner(System.in)) {
 			int choice = keyboard.nextInt();
 			switch (choice) {
@@ -66,6 +67,9 @@ public class Main {
 					createWriteSchedule(keyboard);
 					break;
 				case 7:
+					viewTask();
+					break;
+				case 8:
 					// exit program
 					break;
 				default:
@@ -163,8 +167,7 @@ public class Main {
 					chooseUse();
 					break;
 				case 2:
-					//todo add recurring task edit
-					//editRecurringTask();
+					editRecurringTask();
 					chooseUse();
 					break;
 				case 3:
@@ -196,8 +199,7 @@ public class Main {
 					chooseUse();
 					break;
 				case 2:
-					//todo add recurring task delete
-					//deleteRecurringTask();
+					deleteRecurringTask();
 					chooseUse();
 					break;
 				case 3:
@@ -396,7 +398,7 @@ public class Main {
 	{
 		TransientTask tt = new TransientTask();
 		tt.create();
-		if(tt.getTaskType().equals("Transient")) {
+		if(tt.getTaskType() != null && tt.getTaskType().equals("Transient")) {
 			Schedule.hm.put(tt.getName(), tt);
 			System.out.println("Transient Task " + tt.getName() + " added to Schedule");
 			tt.view();
@@ -411,7 +413,7 @@ public class Main {
 		at.create();
 
 		//verify no overlaps here
-		if(at.getTaskType().equals("Anti")) {
+		if(at.getTaskType() != null && at.getTaskType().equals("Anti")) {
 			Schedule.hm.put(at.getName(), at);
 			System.out.println("Anti Task " + at.getName() + " added to Schedule");
 			at.view();
@@ -424,7 +426,7 @@ public class Main {
 	{
 		RecurringTask rt = new RecurringTask();
 		rt.create();
-		Schedule.hm.put(rt.getName(), rt);
+		//Schedule.hm.put(rt.getName(), rt);
 		System.out.println("Recurring Task " + rt.getName() + " added to Schedule");
 		rt.view();
 
@@ -437,7 +439,7 @@ public class Main {
 		System.out.println("Enter Transient Task to Edit: ");
 		String key = kb.nextLine();
 
-		if(Schedule.hm.get(key).getTaskType().equals("Transient") && Schedule.hm.containsKey(key))
+		if(Schedule.hm.get(key).getTaskType() != null && Schedule.hm.get(key).getTaskType().equals("Transient") && Schedule.hm.containsKey(key))
 		{
 			TransientTask edit = (TransientTask) Schedule.hm.get(key);
 			edit.edit();
@@ -454,7 +456,7 @@ public class Main {
 		System.out.println("Enter Anti Task to Edit: ");
 		String key = kb.nextLine();
 
-		if(Schedule.hm.get(key).getTaskType().equals("Anti") && Schedule.hm.containsKey(key))
+		if(Schedule.hm.get(key).getTaskType() != null && Schedule.hm.get(key).getTaskType().equals("Anti") && Schedule.hm.containsKey(key))
 		{
 			AntiTask edit = (AntiTask) Schedule.hm.get(key);
 			edit.edit();
@@ -464,6 +466,22 @@ public class Main {
 			System.out.println("Anti Task entered not in Schedule");
 	}
 
+	public static void editRecurringTask()
+	{
+		Scanner kb = new Scanner(System.in);
+		System.out.println("Enter Recurring Task to Edit: ");
+		String key = kb.nextLine();
+
+		if(Schedule.hm.get(key).getTaskType() != null && Schedule.hm.get(key).getTaskType().equals("Recurring") && Schedule.hm.containsKey(key))
+		{
+			RecurringTask edit = (RecurringTask) Schedule.hm.get(key);
+			edit.edit();
+			edit.view();
+		}
+		else
+			System.out.println("Recurring Task entered not in Schedule");
+
+	}
 
 
 	//delete tasks
@@ -473,7 +491,7 @@ public class Main {
 		System.out.println("Enter Transient Task to Delete: ");
 		String key = kb.nextLine();
 
-		if(Schedule.hm.get(key).getTaskType().equals("Transient") && Schedule.hm.containsKey(key))
+		if(Schedule.hm.get(key).getTaskType() != null && Schedule.hm.get(key).getTaskType().equals("Transient") && Schedule.hm.containsKey(key))
 		{
 			TransientTask del = (TransientTask) Schedule.hm.get(key);
 			del.delete();
@@ -485,10 +503,10 @@ public class Main {
 	public static void deleteAntiTask()
 	{
 		Scanner kb = new Scanner(System.in);
-		System.out.println("Enter Anti Task to Edit: ");
+		System.out.println("Enter Anti Task to Delete: ");
 		String key = kb.nextLine();
 
-		if(Schedule.hm.get(key).getTaskType().equals("Anti") && Schedule.hm.containsKey(key))
+		if(Schedule.hm.get(key).getTaskType() != null && Schedule.hm.get(key).getTaskType().equals("Anti") && Schedule.hm.containsKey(key))
 		{
 			AntiTask del = (AntiTask) Schedule.hm.get(key);
 			del.delete();
@@ -496,6 +514,23 @@ public class Main {
 		else
 			System.out.println("Anti Task entered not in Schedule");
 	}
+
+	public static void deleteRecurringTask()
+	{
+		Scanner kb = new Scanner(System.in);
+		System.out.println("Enter Recurring Task to Delete: ");
+		String key = kb.nextLine();
+
+		if(Schedule.hm.get(key).getTaskType() != null && Schedule.hm.get(key).getTaskType().equals("Recurring") && Schedule.hm.containsKey(key))
+		{
+			RecurringTask del = (RecurringTask) Schedule.hm.get(key);
+			del.delete();
+			System.out.println("Recurring Task Deleted");
+		}
+		else
+			System.out.println("Anti Task entered not in Schedule");
+	}
+
 
 	// ====================================== VERIFY INPUT ======================================
 
@@ -685,6 +720,8 @@ public class Main {
 			Schedule.hm.get(view).view();
 		else
 			System.out.println("Task Entered Not In Schedule");
+
+		chooseUse();
 	}
 
 	public static void createWriteSchedule(Scanner keyboard) throws IOException, ParseException, java.text.ParseException {
@@ -768,6 +805,19 @@ public class Main {
 			return "error";
 		}
 
+	}
+
+	public static float calcEndTime(float inStartTime, float inDuration) {
+		int integer = (int)(inStartTime+inDuration);
+		float decimal = (inStartTime + inDuration) - integer;
+		if (((inStartTime+inDuration)-integer)>=.60) {
+			integer++;
+			decimal-=.60;
+		}
+		if(integer >23) {
+			integer-=24;
+		}
+		return integer+decimal;
 	}
 
 }
