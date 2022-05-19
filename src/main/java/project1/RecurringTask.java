@@ -199,154 +199,154 @@ public class RecurringTask extends Task {
         return;
     }
 
-    public void createFromFile(String inputName, String inputType, long inputStartTime, Double inputDuration,
-                               long inputStartDate, long inputEndDate, long inputFrequency ) {
-
-        boolean validName = false;
-        while(!validName) {
-            if (!Schedule.hm.containsKey(inputName) && inputName.length() <= 30) {
-                validName = true;
-                this.setName(inputName);
-            }
-            else {
-                if (Schedule.hm.containsKey(inputName)) {
-                    System.out.println("Invalid name: schedule contains duplicate.\n");
-                }
-                else if (inputName.length() >= 30) {
-                    System.out.println("Invalid name: name too long.\n");
-                }
-                else {
-                    System.out.println("Task not created due to conflicts. INVALID NAME\n");
-                    return;
-                }
-            }
-        }
-
-        boolean setValid = true;
-        while(setValid) {
-
-            String choice = inputType;
-
-            if (choice.equalsIgnoreCase("class")){
-                setType(validTypes[0]);
-                setValid = false;}
-
-            else if (choice.equalsIgnoreCase("study")){
-                setType(validTypes[1]);
-                setValid = false;}
-
-            else if (choice.equalsIgnoreCase("sleep")){
-                setType(validTypes[2]);
-                setValid = false;}
-
-            else if (choice.equalsIgnoreCase("Exercise")){
-                setType(validTypes[3]);
-                setValid = false;}
-
-            else if (choice.equalsIgnoreCase("Work")){
-                setType(validTypes[4]);
-
-                setValid = false;}
-
-            else if (choice.equalsIgnoreCase("meal")){
-                setType(validTypes[5]);
-                setValid = false;}
-
-            else if (setValid == true) {
-                System.out.println("Task not created due to conflicts. INVALID TYPE \n");
-                return;
-            }
-        }
-
-        while(true){
-
-            float startHour;
-            float startMinute;
-            String dayTime;
-
-            if(inputStartTime <= 12){
-                startHour = (float) Math.floor(inputStartTime);
-                startMinute = 0;
-                dayTime = "am";
-            } else{
-                startHour = (float) Math.floor(inputStartTime - 12);
-                startMinute = 0;
-                dayTime = "pm";
-            }
-
-            if (Main.verifyStartTime(startHour, startMinute, dayTime) != 0) {
-                setStartTime(Main.verifyStartTime(startHour, startMinute, dayTime));
-                break;
-            }
-                System.out.println("Task not created due to conflicts. INVALID START TIME\n");
-                return;
-        }
-
-        while(true) {
-
-            float durHour;
-            float durMinute = 0;
-
-            durHour = (float) Math.floor(inputDuration);
-
-            if((inputDuration - durHour) == 0.25){
-                durMinute = 15;
-            } else if((inputDuration - durHour) == 0.5){
-                durMinute = 30;
-            } else if((inputDuration - durHour) == 0.75){
-                durMinute = 45;
-            } else if((inputDuration - durHour) == 0){
-                durMinute = 0;
-            }
-
-            if (Main.verifyDuration(durHour, durMinute) != 0) {
-                setDuration(Main.verifyDuration(durHour, durMinute));
-                break;
-            }
-                System.out.println("Task not created due to conflicts. INVALID TYPE\n");
-                return;
-        }
-
-        while(true) {
-
-            long iFrequency = inputFrequency;
-            if (Main.verifyFrequency((int) iFrequency)) {
-                setFrequency((int) iFrequency);
-                break;
-            }
-                System.out.println("Task not created due to conflicts. INVALID FREQUENCY\n");
-                return;
-        }
-
-        long iStartDate;
-        while(true) {
-
-            iStartDate = inputStartDate;
-            if (Main.verifyDate((int) iStartDate)) {
-
-                setStartDate((int)iStartDate);
-
-                break;
-            }
-                System.out.println("Task not created due to conflicts. INVALID START DATE\n");
-                return;
-        }
-
-        while(true) {
-            long iEndDate = inputEndDate;
-            if (Main.verifyEndDate((int)iStartDate,(int) iEndDate)) {
-
-                setEndDate((int) iEndDate);
-                break;
-            }
-                System.out.println("Task not created due to conflicts. INVALID END DATE\n");
-                return;
-        }
-
-        setTaskType(classType);
-
-        return;
-    }
+//    public void createFromFile(String inputName, String inputType, long inputStartTime, Double inputDuration,
+//                               long inputStartDate, long inputEndDate, long inputFrequency ) {
+//
+//        boolean validName = false;
+//        while(!validName) {
+//            if (!Schedule.hm.containsKey(inputName) && inputName.length() <= 30) {
+//                validName = true;
+//                this.setName(inputName);
+//            }
+//            else {
+//                if (Schedule.hm.containsKey(inputName)) {
+//                    System.out.println("Invalid name: schedule contains duplicate.\n");
+//                }
+//                else if (inputName.length() >= 30) {
+//                    System.out.println("Invalid name: name too long.\n");
+//                }
+//                else {
+//                    System.out.println("Task not created due to conflicts. INVALID NAME\n");
+//                    return;
+//                }
+//            }
+//        }
+//
+//        boolean setValid = true;
+//        while(setValid) {
+//
+//            String choice = inputType;
+//
+//            if (choice.equalsIgnoreCase("class")){
+//                setType(validTypes[0]);
+//                setValid = false;}
+//
+//            else if (choice.equalsIgnoreCase("study")){
+//                setType(validTypes[1]);
+//                setValid = false;}
+//
+//            else if (choice.equalsIgnoreCase("sleep")){
+//                setType(validTypes[2]);
+//                setValid = false;}
+//
+//            else if (choice.equalsIgnoreCase("Exercise")){
+//                setType(validTypes[3]);
+//                setValid = false;}
+//
+//            else if (choice.equalsIgnoreCase("Work")){
+//                setType(validTypes[4]);
+//
+//                setValid = false;}
+//
+//            else if (choice.equalsIgnoreCase("meal")){
+//                setType(validTypes[5]);
+//                setValid = false;}
+//
+//            else if (setValid == true) {
+//                System.out.println("Task not created due to conflicts. INVALID TYPE \n");
+//                return;
+//            }
+//        }
+//
+//        while(true){
+//
+//            float startHour;
+//            float startMinute;
+//            String dayTime;
+//
+//            if(inputStartTime <= 12){
+//                startHour = (float) Math.floor(inputStartTime);
+//                startMinute = 0;
+//                dayTime = "am";
+//            } else{
+//                startHour = (float) Math.floor(inputStartTime - 12);
+//                startMinute = 0;
+//                dayTime = "pm";
+//            }
+//
+//            if (Main.verifyStartTime(startHour, startMinute, dayTime) != 0) {
+//                setStartTime(Main.verifyStartTime(startHour, startMinute, dayTime));
+//                break;
+//            }
+//                System.out.println("Task not created due to conflicts. INVALID START TIME\n");
+//                return;
+//        }
+//
+//        while(true) {
+//
+//            float durHour;
+//            float durMinute = 0;
+//
+//            durHour = (float) Math.floor(inputDuration);
+//
+//            if((inputDuration - durHour) == 0.25){
+//                durMinute = 15;
+//            } else if((inputDuration - durHour) == 0.5){
+//                durMinute = 30;
+//            } else if((inputDuration - durHour) == 0.75){
+//                durMinute = 45;
+//            } else if((inputDuration - durHour) == 0){
+//                durMinute = 0;
+//            }
+//
+//            if (Main.verifyDuration(durHour, durMinute) != 0) {
+//                setDuration(Main.verifyDuration(durHour, durMinute));
+//                break;
+//            }
+//                System.out.println("Task not created due to conflicts. INVALID TYPE\n");
+//                return;
+//        }
+//
+//        while(true) {
+//
+//            long iFrequency = inputFrequency;
+//            if (Main.verifyFrequency((int) iFrequency)) {
+//                setFrequency((int) iFrequency);
+//                break;
+//            }
+//                System.out.println("Task not created due to conflicts. INVALID FREQUENCY\n");
+//                return;
+//        }
+//
+//        long iStartDate;
+//        while(true) {
+//
+//            iStartDate = inputStartDate;
+//            if (Main.verifyDate((int) iStartDate)) {
+//
+//                setStartDate((int)iStartDate);
+//
+//                break;
+//            }
+//                System.out.println("Task not created due to conflicts. INVALID START DATE\n");
+//                return;
+//        }
+//
+//        while(true) {
+//            long iEndDate = inputEndDate;
+//            if (Main.verifyEndDate((int)iStartDate,(int) iEndDate)) {
+//
+//                setEndDate((int) iEndDate);
+//                break;
+//            }
+//                System.out.println("Task not created due to conflicts. INVALID END DATE\n");
+//                return;
+//        }
+//
+//        setTaskType(classType);
+//
+//        return;
+//    }
 
 
 

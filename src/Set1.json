@@ -19,15 +19,6 @@
   },
   {
     "Name" : "Skip For Visit",
-    "Type" : "Class",
-    "StartDate" : 20200428,
-    "StartTime" : 19,
-    "Duration" : 1.25,
-    "EndDate" : 20200507,
-    "Frequency" : 1
-  },
-  {
-    "Name" : "Skip For Visit",
     "Type" : "Cancellation",
     "Date" : 20200428,
     "StartTime" : 19,
