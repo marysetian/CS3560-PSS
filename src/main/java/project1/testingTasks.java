@@ -21,7 +21,7 @@ public class testingTasks {
 
     private static void createRecurringTask()
     {
-        RecurringTask rec = new RecurringTask("cs356", "Class",17,1,20220510,20220705,7, "Recurring");
+        RecurringTask rec = new RecurringTask("cs357", "Class",17,1,20220510,20220705,7, "Recurring");
         //RecurringTask rec = new RecurringTask();
         //rec.create();
         rec.view();
@@ -43,7 +43,7 @@ public class testingTasks {
 
     private static void createTransientTask()
     {
-        TransientTask create = new TransientTask("dentist", "Appointment", 8,9,20220525,"Transient");
+        TransientTask create = new TransientTask("dentist", "Appointment", 8,9,20220515,"Transient");
 
         // TransientTask create = new TransientTask();
         //create.create();

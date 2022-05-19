@@ -3,13 +3,6 @@ package project1;
 import java.util.Scanner;
 
 public class RecurringTask extends Task {
-    // todo : double check if these can be inherited from Task
-//    private String name;
-//    private String type;
-//    private float startTime;
-//    private float duration;
-    //
-    //
 
     private int startDate;  //YYYYMMDD
     private int endDate;    //YYYYMMDD
@@ -72,7 +65,6 @@ public class RecurringTask extends Task {
                 }
                 else {
                     System.out.println("Task not created, returning to main menu.\n");
-                  //  keyboard.close();
                     return;
                 }
             }
@@ -85,7 +77,6 @@ public class RecurringTask extends Task {
             int choice = keyboard.nextInt();
             if (choice == 0) {
                 createFailed();
-                keyboard.close();
                 return;
             }
             if (choice == 1){
@@ -125,7 +116,6 @@ public class RecurringTask extends Task {
             int choice = keyboard.nextInt();
             if (choice != 1){
                 createFailed();
-                //keyboard.close();
                 return;
             }
         }
@@ -142,7 +132,6 @@ public class RecurringTask extends Task {
             int choice = keyboard.nextInt();
             if (choice != 1){
                 createFailed();
-                //keyboard.close();
                 return;
             }
         }
@@ -158,7 +147,6 @@ public class RecurringTask extends Task {
             int choice = keyboard.nextInt();
             if (choice != 1){
                 createFailed();
-                //keyboard.close();
                 return;
             }
         }
@@ -176,14 +164,12 @@ public class RecurringTask extends Task {
             int choice = keyboard.nextInt();
             if (choice != 1){
                 createFailed();
-                //keyboard.close();
                 return;
             }
         }
         while(true) {
             System.out.println("Enter end date: ");
             int iEndDate = (keyboard.nextInt());
-            //keyboard.close();
             if (Main.verifyEndDate(iStartDate,iEndDate)) {
 
                 setEndDate(iEndDate);
@@ -193,7 +179,6 @@ public class RecurringTask extends Task {
             int choice = keyboard.nextInt();
             if (choice != 1){
                 createFailed();
-              //  keyboard.close();
                 return;
             }
         }
@@ -446,6 +431,7 @@ public class RecurringTask extends Task {
     public String getName() {
         return name;
     }
+
     public int getStartDate() {
         return startDate;
     }

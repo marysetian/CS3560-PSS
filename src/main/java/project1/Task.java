@@ -6,6 +6,7 @@ public class Task {
     protected String type;
     protected float startTime;
     protected float duration;
+    protected int date;
     private String taskType;
 
 
@@ -16,6 +17,7 @@ public class Task {
         this.startTime = startTime;
         this.duration = duration;
         this.taskType = taskType;
+
     }
 
     public Task() {}
@@ -67,6 +69,7 @@ public class Task {
     }
 
     public void setTaskType(String taskType){this.taskType = taskType;};
+
     public String getTaskType() {return taskType;};
 
 }

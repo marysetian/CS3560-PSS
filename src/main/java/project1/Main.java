@@ -1,13 +1,16 @@
 package project1;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.lang.Math; // Needed to use Math.round()
-import java.util.Calendar;
+
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, ParseException {
 		welcomeMessage();
 		chooseUse();
 	}
@@ -16,25 +19,28 @@ public class Main {
 		System.out.println("Welcome to PSS!\n");
 	}
 
-	private static void chooseUse() {
+
+	private static void chooseUse() throws IOException, ParseException {
 		System.out.println("Please choose from the following:\n"
-				+ "1. view schedule\n"
+				+ "1. view schedule in file\n"
 				+ "2. create task\n"
 				+ "3. delete task\n"
 				+ "4. edit task\n"
-				+ "5. read schedule from file\n"
-				+ "6. exit program\n");
+				+ "5. view a task\n"
+				+ "6. read schedule from file\n"
+				+ "7. exit program\n");
 		try (Scanner keyboard = new Scanner(System.in)) {
 			int choice = keyboard.nextInt();
 			switch (choice) {
 				case 1:
 					// view schedule
-					//
-					//
-
+					createWriteSchedule(keyboard);
 					break;
 				case 2:
 					createTask();
+					System.out.println("testing monthly schedule =============");
+		//			Schedule.writeMonthlySchedule(2022,06);
+					//createWriteSchedule(keyboard);
 					// call menu for user to specify the type of task they want to create
 					// call create method for the certain task type
 					break;
@@ -45,21 +51,33 @@ public class Main {
 					// edit task
 					break;
 				case 5:
-					// read schedule from file
+					// view a task
+					viewTask();
 					break;
 				case 6:
+					// read schedule from file
+					Schedule.readSchedule();
+					break;
+				case 7:
+					// write schedule to file
+	//				createWriteSchedule(keyboard);
+					break;
+				case 8:
 					// exit program
 					break;
+
 				default:
 					System.out.println("Invalid input, please try again\n");
 					chooseUse();
 			}
 		}
+
 	}
 
 
+	// ====================================== CREATING TASKS ======================================
 
-	private static void createTask() {
+	private static void createTask() throws IOException, ParseException {
 		System.out.println("Choose from the following task types to create:\n "
 				+ "1. Transient Task"
 				+ "2. Recurring Task"
@@ -69,55 +87,20 @@ public class Main {
 			switch (choice) {
 				case 1:
 					// Transient Task
-					// ask user to name the task
-					// verify name is not a duplicate
-					// create task with an empty constructor
-					// call create method for corresponding task
-
-					/*
-					TransientTask Test1 = new TransientTask();
-					Test1.create();
-					Test1.view();
-
-					Test1.edit();
-					Test1.view();
-
-					 */
 					createTransientTask();
-
-
+					chooseUse();
 					break;
 
 				case 2:
-					//RecurringTask test1 = new RecurringTask();
-					//test1.create();
-					//test1.view();
+					//RecurringTask
 					createRecurringTask();
-					//test1.edit();
-					//test1.view();
-					// Recurring Task
-					// ask user to name the task
-					// verify name is not a duplicate
-					// create task with an empty constructor
-					// call create method for corresponding task
+					chooseUse();
 					break;
 
 				case 3:
 					// anti task
-					// ask user to name the task
-					// verify name is not a duplicate
-					// create task with an empty constructor
-					// call create method for corresponding task
 					createAntiTask();
-					/*
-					AntiTask antiTest1 = new AntiTask();
-					antiTest1.create();
-					antiTest1.view();
-
-					antiTest1.edit();
-					antiTest1.view();
-					*/
-
+					chooseUse();
 					break;
 				default:
 					System.out.println("Invalid input, please try again\n");
@@ -127,12 +110,45 @@ public class Main {
 
 	}
 
+	public static void createTransientTask()
+	{
+		TransientTask tt = new TransientTask();
+		tt.create();
+		//	Schedule.hm.put(tt.getName(), tt);
+		System.out.println("Transient Task " + tt.getName() + " added to Schedule");
+		tt.view();
+	}
+
+	public static void createAntiTask()
+	{
+		AntiTask at = new AntiTask();
+		at.create();
+
+		//verify no overlaps here
+		//	Schedule.hm.put(at.getName(), at);
+		System.out.println("Anti Task " + at.getName() + " added to Schedule");
+		at.view();
+	}
+
+	public static void createRecurringTask()
+	{
+		RecurringTask rt = new RecurringTask();
+		rt.create();
+		Schedule.hm.put(rt.getName(), rt);
+		System.out.println("Recurring Task " + rt.getName() + " added to Schedule");
+		rt.view();
+
+	}
+
+	// ====================================== VERIFY INPUT ======================================
+
 	/**
 	 * verifies the date of task is valid
 	 * @param date		date in form YYYYMMDD given by user
 	 * @return boolean    true if date >= current date
 	 */
-	public static boolean verifyDate(int date) {
+	public static boolean verifyDate(int date)
+	{
 		Calendar today = new GregorianCalendar();
 		int currentYear = today.get(Calendar.YEAR);
 		int currentMonth = today.get(Calendar.MONTH) + 1;
@@ -144,24 +160,11 @@ public class Main {
 		int month = Integer.valueOf(tempDate.substring(4,6));;
 		int day = Integer.valueOf(tempDate.substring(6,8));;
 
-		if(year >= currentYear && month >= currentMonth)
-		{
-			if(month == currentMonth)
-			{
-				if(day >= currentDay)
-					return true;
-				else
-					return false;
-			}
-			return true;
-		}
-
-		if( year >= currentYear && month >= currentMonth && day >= currentDay)
+		if( year >= 2020)
 			return true;
 
 		return false;
 	}
-
 
 	/**
 	 * verifies the given endDate is greater than or equal to startDate
@@ -170,7 +173,8 @@ public class Main {
 	 * @param endDate   an integer in form YYYYMMDD
 	 * @return true if endDate is greater than or equal to startDate
 	 */
-	public static boolean verifyEndDate(int startDate, int endDate) {
+	public static boolean verifyEndDate(int startDate, int endDate)
+	{
 		return endDate > startDate;
 	}
 
@@ -190,10 +194,10 @@ public class Main {
 	 * @param hour    user given hour the task starts at
 	 * @param minute  user given minute task starts at
 	 * @param dayTime a user given string, "am" indicating morning start time, "pm" indicating night start time
-	 * @reutrn startTime    a float holding modified startTime form, 0 if user inputs are found invalid
+	 * @return startTime    a float holding modified startTime form, 0 if user inputs are found invalid
 	 */
-	public static float verifyStartTime(float hour, float minute, String dayTime) {
-
+	public static float verifyStartTime(float hour, float minute, String dayTime)
+	{
 		// is hour between 0 and 24 inclusive, is minute between 0 and 59 inclusive
 		if ((0 <= hour && hour <= 12) && (0 <= minute && minute <= 59)) {
 			switch (dayTime) {
@@ -216,7 +220,8 @@ public class Main {
 		return 0;
 	}
 
-	public static float verifyDuration(float hour, float minute) {
+	public static float verifyDuration(float hour, float minute)
+	{
 		// are both hour and minute positive integers
 		if (hour >= 0 && minute >= 0) {
 			if (minute < 60) {
@@ -235,71 +240,26 @@ public class Main {
 		}
 	}
 
-	public static boolean verifyCategory(int taskSelectionNum, String userInput) {
-		String[] categories = {"Visit", "Shopping", "Appointment", "Class", "Study", "Sleep", "Exercise", "Work", "Meal"};
-		switch (taskSelectionNum) {
-			case 1:
-				return userInput.equals("Cancellation");
-			case 2:
-				for (int i = 0; i < 3; i++) {
-					if (categories[i].equals(userInput)) {
-						return true;
-					}
-				}
-				return false;
-			case 3:
-				for (int i = 3; i < categories.length; i++) {
-					if (categories[i].equals(userInput)) {
-						return true;
-					}
-				}
-				return false;
-			default:
-				return false;
+	public static boolean verifyYearMonth(int year, int month)
+	{
+		Calendar today = new GregorianCalendar();
+		int currentYear = today.get(Calendar.YEAR);
+		int currentMonth = today.get(Calendar.MONTH) + 1;
+
+		// if viewing current year, month must be >= current month
+		if (year == currentYear && month >= currentMonth)
+			return true;
+			// can view any month of a year after current year
+		else if(year > currentYear)
+			return true;
+			// invalid year and month
+		else {
+			System.out.println("Invalid year or month. Please try again\n");
+			return false;
 		}
 	}
 
-	public static void viewTask()
-	{
-		Scanner keyboard = new Scanner(System.in);
-		System.out.println("Current Tasks");
-		System.out.println(Schedule.hm.keySet());
-		System.out.println("Select a Task to View: ");
-		String view = keyboard.nextLine().trim();
-
-		Schedule.hm.get(view).view();
-	}
-
-	public static void createTransientTask()
-	{
-		TransientTask tt = new TransientTask();
-		tt.create();
-		Schedule.hm.put(tt.getName(), tt);
-		System.out.println("Transient Task " + tt.getName() + " added to Schedule");
-		tt.view();
-	}
-
-	public static void createAntiTask()
-	{
-		AntiTask at = new AntiTask();
-		at.create();
-
-		//verify no overlaps here
-		Schedule.hm.put(at.getName(), at);
-		System.out.println("Anti Task " + at.getName() + " added to Schedule");
-		at.view();
-	}
-
-	public static void createRecurringTask()
-	{
-		RecurringTask rt = new RecurringTask();
-		rt.create();
-		Schedule.hm.put(rt.getName(), rt);
-		System.out.println("Recurring Task " + rt.getName() + " added to Schedule");
-		rt.view();
-
-	}
-
+	// ====================================== CHECK FOR TASK OVERLAP ======================================
 	//if true it does overlap
 	public static boolean checkOverlapTime(float start1, float dur1, float start2, float dur2)
 	{
@@ -320,8 +280,8 @@ public class Main {
 		{
 			String tempDate = String.valueOf(newDate);
 			int year = Integer.valueOf(tempDate.substring(0,4));
-			int month = Integer.valueOf(tempDate.substring(4,6));;
-			int day = Integer.valueOf(tempDate.substring(6,8));;
+			int month = Integer.valueOf(tempDate.substring(4,6));
+			int day = Integer.valueOf(tempDate.substring(6,8));
 			if(newDate == date)
 				return true;
 
@@ -348,10 +308,105 @@ public class Main {
 
 			newDate = Integer.valueOf(sb.toString());
 			//System.out.println(newDate);
-
 		}
-
 		return false;
 	}
+
+
+	// ====================================== VIEW TASKS/ WRITE SCHEDULE ======================================
+
+	public static void viewTask()
+	{
+		Scanner keyboard = new Scanner(System.in);
+		System.out.println("Current Tasks");
+		//	System.out.println(Schedule.hm.keySet());
+		System.out.println("Select a Task to View: ");
+		String view = keyboard.nextLine().trim();
+		//	Schedule.hm.get(view).view();
+	}
+
+	public static void createWriteSchedule(Scanner keyboard) throws IOException, ParseException {
+		System.out.println("Please choose which type of schedule you would like to print:\n"
+				+ "1. daily schedule\n"
+				+ "2. weekly schedule\n"
+				+ "3. monthly schedule\n"
+				+ "4. exit program\n");
+
+		int choice = keyboard.nextInt();
+		switch (choice) {
+			case 1:
+				// daily schedule  -- Mary
+				String dailyFilename;
+
+				//verify file to write to was created
+				do{
+					dailyFilename = fileCreation(keyboard);
+					System.out.println(dailyFilename);
+				}while (dailyFilename.equals("error"));
+
+				// call write mehtod
+
+
+				break;
+			case 2:
+				// weekly schedule -- Linda
+				String weeklyFilename;
+				//verify file to write to was created
+				do{
+					weeklyFilename = fileCreation(keyboard);
+					System.out.println(weeklyFilename);
+				}while (weeklyFilename.equals("error"));
+
+				// call method
+
+				break;
+			case 3:
+				// monthly schedule  -- Alondra
+				String monthlyFilename;
+
+				//verify file to write to was created
+				do{
+					monthlyFilename = fileCreation(keyboard);
+					System.out.println(monthlyFilename);
+				}while (monthlyFilename.equals("error"));
+
+				// verify date to view monthly schedule is correct
+				int year;
+				int month;
+				do {
+					System.out.println("Enter the year whose monthly schedule you'd like to view (YYYY): ");
+					year = keyboard.nextInt();
+					System.out.println("Enter the month whose monthly schedule you'd like to view (MM): ");
+					month = keyboard.nextInt();
+				}
+				while (!verifyYearMonth(year, month));
+
+				Schedule.writeMonthlySchedule(year, month, monthlyFilename);
+				chooseUse();
+				break;
+			case 4:
+				// exit program
+				break;
+			default:
+				System.out.println("Invalid input, please try again\n");
+				//				createWriteSchedule(keyboard);
+		}
+	}
+
+	public static String fileCreation(Scanner keyboard){
+		String filename;
+		System.out.println("Enter filename where you'd like to print schedule (no extension): ");
+		filename = "/Users/alondrasanchez/IdeaProjects/cs3560_pss/"+ keyboard.next() + ".json";
+		try{
+			FileWriter fw = new FileWriter(filename);
+			return filename;
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Error");
+			return "error";
+		}
+
+	}
+
 }
 

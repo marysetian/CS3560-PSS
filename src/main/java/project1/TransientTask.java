@@ -3,15 +3,8 @@ package project1;
 import java.util.Scanner;
 
 public class TransientTask extends Task {
-    // todo : double check if these can be inherited from Task
-    // private String name;
-    // private String type;
-    // private float startTime;
-    // private float duration;
-
     private int date;    // YYYYMMDD
     private String[] validTypes = {"Visit", "Shopping", "Appointment"};
-
     private final String classType = "Transient";
 
 
@@ -30,12 +23,81 @@ public class TransientTask extends Task {
 
     }
 
-    public TransientTask() {}
-
-
     /**
      * create a tranisient task
      */
+    public TransientTask() {}
+
+    public void createFromFile(String iname, int date, float startTime, float duration, String type)
+    {
+        boolean valid = false;
+
+        // validate name of task
+        boolean validName = false;
+        if (!Schedule.hm.containsKey(iname)) {
+            validName = true;
+        }
+
+        //validate taskType
+        boolean validTaskType = false;
+        if (type.equals("Shopping") || type.equals("Appointment") || type.equals("Visit") ){
+            validTaskType = true;
+        }
+
+        // validate task startTime
+        boolean validStartTime = false;
+        float startHour ;
+        float startMin = 0;
+        String dayTime;
+        if (startTime <= 12){
+            startHour = (float) Math.floor(startTime);
+            dayTime = "am";
+        }
+        else {
+            startHour = (float) Math.floor(startTime - 12);
+            dayTime = "pm";
+        }
+        float formattedStartTime = Main.verifyStartTime(startHour, startMin, dayTime);
+        if (formattedStartTime != 0)
+            validStartTime = true;
+
+        // validate duration
+        boolean validDuration = false;
+        float durationHour = (float) Math.floor(duration);
+        float durationMin = duration - (int) Math.floor(duration);
+        if(durationMin == .25){
+            durationMin = 15;
+        }
+        else if(durationMin == .5){
+            durationMin = 30;
+        }
+        else if(durationMin == .75){
+            durationMin = 45;
+        }
+        else{
+            durationMin =0;
+        }
+        float formattedDuration = Main.verifyDuration(durationHour, durationMin);
+        if(formattedDuration != 0){
+            validDuration = true;
+        }
+
+        // validate date
+        boolean validDate = false;
+        if(Main.verifyDate(date))
+        {
+            validDate = true;
+        }
+
+        if(validName && validDate && validDuration && validTaskType && validStartTime){
+            setName(iname);
+            setDate(date);
+            setDuration(formattedDuration);
+            setType(type);
+            setStartTime(formattedStartTime);
+            setTaskType(classType);
+        }
+    }
 
     public void create()
     {
@@ -76,8 +138,6 @@ public class TransientTask extends Task {
             else
                 System.out.println("\nInvalid type, please enter again.");
         }
-
-
 
         //start time input and verification
         boolean validStartTime = false;
