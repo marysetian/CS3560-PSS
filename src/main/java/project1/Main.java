@@ -49,6 +49,7 @@ public class Main {
 					break;
 				case 3:
 					// delete a task
+					deleteTask();
 					break;
 				case 4:
 					editTask();
