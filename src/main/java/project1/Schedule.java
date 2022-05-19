@@ -6,26 +6,86 @@ import org.json.simple.parser.JSONParser;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.YearMonth;
 import java.util.*;
 
 public class Schedule {
 
     public static Map<String, Task>hm = new HashMap<>();
 
-    /**
-     * prints a user's schedule to a file
-     * @param filename  file to be written to
-     */
-    public void printToFile(String filename){};
+    // ================================= MAIN WRITE METHODS =================================
+    // todo : add write daily
+    // todo : add write weekly
+    public static void writeMonthlySchedule(int year, int month, String filename) throws IOException, ParseException {
+        // get the beginning date of the month range (YYYYMMDD)
+        String tempStartDay = "01";
+        String tempStartYear = Integer.toString(year);
+        String tempStartMonth;
+        // update month format
+        if (month < 10){
+            tempStartMonth = "0" + Integer.toString(month);
+        }
+        else {
+            tempStartMonth = Integer.toString(month);
+        }
+        // fixed format of the start date range for the month
+        int startDate = Integer.parseInt(tempStartYear + tempStartMonth + tempStartDay);
 
-    /**
-    * reads a schedule from a user provided file
-    * @param filename  name of file to be reae*/
-    public void readFromFile(String filename){};
+        // get the end date for the month (end of range : (YYYYMMDD)
+        YearMonth yearMonthObj = YearMonth.of(year, month);
+        int daysInMonth = yearMonthObj.lengthOfMonth();
+        String tempdaysInMonth = Integer.toString(daysInMonth);
+        int endDate = Integer.parseInt(tempStartYear + tempStartMonth + tempdaysInMonth);
 
-    /**
-     * verify file category is valid when reading from a file
-     * */
+
+        // iterate hashmap hm, collect all tasks in month
+        Map<Double, Task> monthlyTasks = new TreeMap<>();
+
+
+        for(Map.Entry mapElement : Schedule.hm.entrySet())
+        {
+            String key = (String) mapElement.getKey();
+
+            // is element a transient task
+            if (Schedule.hm.get(key).getTaskType().equals("Transient")) {
+                TransientTask tempTransient = (TransientTask) Schedule.hm.get(key);
+                if(startDate <= tempTransient.getDate() && tempTransient.getDate() <= endDate){
+                    String date = String.valueOf(tempTransient.getDate());
+                    String time = String.valueOf(tempTransient.getStartTime());;
+                    Double monthlyKey = Double.parseDouble(date + time);
+                    monthlyTasks.put(monthlyKey, tempTransient);
+                }
+            }
+
+            // is element a recurring task
+            if (Schedule.hm.get(key).getTaskType().equals("Recurring")) {
+                RecurringTask tempRecurring = (RecurringTask) Schedule.hm.get(key);
+                ArrayList<Integer> recurringDatesOfTask = returnRecurringDates(startDate, endDate, tempRecurring.getStartDate(), tempRecurring.getEndDate(), tempRecurring.getFrequency());
+
+                for(int i = 0; i < recurringDatesOfTask.size(); i++) {
+
+                    //task date lies within the given start date and days in month (range for the week)
+                    if (startDate <= recurringDatesOfTask.get(i) && recurringDatesOfTask.get(i) <= endDate) {
+
+                        String date, time;
+                        Double monthlyKey;
+
+                        String recurAntiName = "anti_" + tempRecurring.getName() + "_" + recurringDatesOfTask.get(i);
+
+                        if(!hm.containsKey(recurAntiName)) {
+
+                            date = Integer.toString(recurringDatesOfTask.get(i));
+                            time = String.valueOf(tempRecurring.getStartTime());
+
+                            monthlyKey = Double.parseDouble(date + time);
+                            monthlyTasks.put(monthlyKey, tempRecurring);
+                        }
+                    }
+                }
+            }
+        }
+        writeToJSON(filename, monthlyTasks);
+    }
 
     //hashmap that stores the tasks by the given date and sorts tasks by time
     public static TreeMap<Double, Task> tm = new TreeMap<>();
@@ -79,7 +139,6 @@ public class Schedule {
         }
         writeToJSON(fileName, tm);
     }
-
 
     //write schedule to json file for a week
     public static void writeWeeklyToFile( String filename, int givenDate) throws ParseException {
@@ -149,10 +208,10 @@ public class Schedule {
 
                             weeklyKey = Double.parseDouble(date + time);
 
-                            System.out.println("DATE: " + date + ", Time: " + time);
-                            System.out.println("tempKey: " + tempKey);
-
-                            System.out.println("DATE: " + arrList.get(i) + ", KEY: " + weeklyKey);
+//                            System.out.println("DATE: " + date + ", Time: " + time);
+//                            System.out.println("tempKey: " + tempKey);
+//
+//                            System.out.println("DATE: " + arrList.get(i) + ", KEY: " + weeklyKey);
 
                             weeklyTasks.put(weeklyKey, tempRecurring);
 
@@ -185,7 +244,7 @@ public class Schedule {
         return endDate;
     }
 
-    // returns a list of the recurring occuring in a given range
+    // returns a list of the recurring occurring in a given range
     public static ArrayList<Integer> returnRecurringDates(int rangeStart, int rangeEnd, int taskStartDate, int taskEndDate, int frequency) throws ParseException {
         ArrayList<Integer> recurringDays = new ArrayList<Integer>(); // holds all days a recurring task takes place
 
@@ -282,7 +341,6 @@ public class Schedule {
         }
         System.out.println("JSON file created: "+ jsonObject);
     }
-
 
     public static void readSchedule() throws IOException {
         Scanner kb = new Scanner(System.in);
