@@ -446,7 +446,7 @@ public class Schedule {
             long startDate = (long) task.get("StartDate");
             long endDate = (long) task.get("EndDate");
             long startTime = (long) task.get("StartTime");
-            Double duration = (Double) task.get("Duration");
+            long duration = (long) task.get("Duration");
             long frequency = (long) task.get("Frequency");
 
 
@@ -510,7 +510,7 @@ public class Schedule {
 
             if (validName && validStartDate && validEndDate && validDuration && validTaskType && validStartTime) {
                 RecurringTask recurrTask = new RecurringTask();
-                recurrTask.createFromFile(name, type, startTime, duration, startDate, endDate, frequency);
+                recurrTask.createFromFile(name, type, (long) formattedStartTime, (double) formattedDuration, startDate, endDate, frequency);
 
                 hm.put(recurrTask.getName(), recurrTask);
                 recurrTask.view();
