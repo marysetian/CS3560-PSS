@@ -51,6 +51,7 @@ public class Main {
 					// delete a task
 					break;
 				case 4:
+					editTask();
 					// edit task
 					break;
 				case 5:
@@ -145,6 +146,73 @@ public class Main {
 			}
 		}
 	}
+
+	private static void editTask()
+	{
+		System.out.println("Choose from the following task types to edit:\n"
+				+ "1. Transient Task \n"
+				+ "2. Recurring Task \n"
+				+ "3. Anti Task \n"
+				+ "4. Back to chooseUse menu \n");
+		try (Scanner keyboard = new Scanner(System.in)) {
+			int choice = keyboard.nextInt();
+			switch (choice) {
+				case 1:
+					editTransientTask();
+					chooseUse();
+					break;
+				case 2:
+					//todo add recurring task edit
+					//editRecurringTask();
+					chooseUse();
+					break;
+				case 3:
+					editAntiTask();
+					chooseUse();
+					break;
+				case 4:
+					chooseUse();
+					break;
+				default:
+					System.out.println("Invalid input, please try again\n");
+					editTask();
+			}
+		}
+	}
+
+	private static void deleteTask()
+	{
+		System.out.println("Choose from the following task types to delete:\n"
+				+ "1. Transient Task \n"
+				+ "2. Recurring Task \n"
+				+ "3. Anti Task \n"
+				+ "4. Back to chooseUse menu \n");
+		try (Scanner keyboard = new Scanner(System.in)) {
+			int choice = keyboard.nextInt();
+			switch (choice) {
+				case 1:
+					deleteTransientTask();
+					chooseUse();
+					break;
+				case 2:
+					//todo add recurring task delete
+					//deleteRecurringTask();
+					chooseUse();
+					break;
+				case 3:
+					deleteAntiTask();
+					chooseUse();
+					break;
+				case 4:
+					chooseUse();
+					break;
+				default:
+					System.out.println("Invalid input, please try again\n");
+					deleteTask();
+			}
+		}
+	}
+
 
 	//The menu for writing a schedule
 //	public static void createWriteSchedule() {
@@ -394,6 +462,8 @@ public class Main {
 		else
 			System.out.println("Anti Task entered not in Schedule");
 	}
+
+
 
 	//delete tasks
 	public static void deleteTransientTask()
